@@ -1,32 +1,68 @@
-local width = 10
-local height = 10
-
 function love.load()
-  character = {}
-  character.x = 300
-  character.y = 400
+  quads = {}
+  quads['left'] = {}
+  quads['right'] = {}
 
-  love.graphics.setBackgroundColor(255, 153, 0)
+  for j = 1, 8 do
+    quads['right'][j] = love.graphics.newQuad((j - 1) * 32, 0, 32, 32, 256, 32);
+    quads['left'][j] = love.graphics.newQuad((j) * 32, 0, -32, 32, 256, 32);
+  end
 
-  love.graphics.setColor(0, 0, 225)
+  sprite = {
+    player = love.graphics.newImage('res/sprite.png'),
+    x = 50,
+    y = 50,
+    direction = 'right',
+    idle = true,
+    animation = {
+      iteration = 1,
+      count = 8
+    }
+  }
+
+  timer = 0
 end
 
 function love.update(dt)
-  if love.keyboard.isDown('d') then
-    character.x = character.x + 10 * dt
-  end
-  if love.keyboard.isDown('a') then
-    character.x = character.x - 10 * dt
-  end
+  if not sprite.idle then
+    timer = timer + dt
+    if timer > 0.1 then
+      timer = 0
 
-  if love.keyboard.isDown('w') then
-    character.y = character.y - 10 * dt
+      sprite.animation.iteration = sprite.animation.iteration + 1
+
+      if love.keyboard.isDown('right') then
+        sprite.x = sprite.x + 5
+      end
+
+      if love.keyboard.isDown('left') then
+        sprite.x = sprite.x - 5
+      end
+
+      if sprite.animation.iteration > sprite.animation.count then
+        sprite.animation.iteration = 1
+      end
+    end
   end
-  if love.keyboard.isDown('s') then
-    character.y = character.y + 10 * dt
+end
+
+function love.keypressed(key)
+  if key == 'left' or key == 'right' then
+    sprite.direction = key
+    sprite.idle = false
+  end
+end
+
+function love.keyreleased(key)
+  if (key == 'left' or key == 'right') and sprite.direction == key then
+    sprite.idle = true
+    sprite.animation.iteration = 1
+    -- sprite.direction = key
   end
 end
 
 function love.draw()
-  love.graphics.rectangle('fill', character.x, character.y, width, height)
+  local xscale = 1
+  if sprite.direction == 'left' then xscale = -1 end
+  love.graphics.draw(sprite.player, quads[sprite.direction][sprite.animation.iteration], sprite.x, sprite.y, 0, xscale, 1)
 end

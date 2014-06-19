@@ -4,3 +4,6 @@
 [submodule "lib/bump"]
 	path = lib/bump
 	url = https://github.com/kikito/bump.lua.git
+[submodule "lib/anim8"]
+	path = lib/anim8
+	url = https://github.com/kikito/anim8.git

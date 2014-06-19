@@ -3,6 +3,11 @@
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="tiles.png" trans="ff00ff" width="320" height="200"/>
  </tileset>
+ <layer name="Jungle shadow" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJztl1EKwzAIhnO5rr1Ctl2gT939n4YwQeQ3MZnmYewHoaOt+WY02rOUcgLTat233okQYkNr1cYzlo8IZvazO/wixp7dg/i0XR+7TTC+PjbLtnX45D20RhUM0fHaDCa9v961ZDwz2IrB+xzwW4PYUIwQH++bzr0sWXvaqreImHjZOG4yfiiWK2PGbHLtw2CKrL9f1Mp+OSKZY1Kt+l0lWRdaKO8oN1flHrHpPon4+Jr+x8h5/C0b2dXhk9er6pbZWj2ftCu+LDaOExupNUciZbJZ56pkRFpVq63c8dRHFCPHysuGGLP45D4i/71+ToxHEp+e2ZB/74xb1fs8K5BmZ5boPGFGNGPNMGb0Rev7a+acyToDNKOXbVO/5fdb9DnKjCN+H4afrN5d+4/81dEbdtJ+BQ==
+  </data>
+ </layer>
  <layer name="Non-collision" width="40" height="30">
   <data encoding="base64" compression="zlib">
    eJztlUsOgjAURZnhBhzBBvzCBtBE3YBOZAMy4Lf/oRe1k6YmLe8SGLyT3IQBObmvlDaKFEVRFEVZOi3SIT3ZmyFbJBd6Vj/PTtzoS4wciF4zJ6ufIUHWBO+G5HF5h7lTkmcvbuT2Suc2+0S6j20y63lsV9acNq5Okn7SffLPy/g/plg/1tysc8Bm6euXkLyh/WqkCfAO59ZxXLUPofdQgZw83pvj+56RO/JALh5e1v0WMucLqSbwMjxX5IY8kZLoVfx5A6hZFLA=

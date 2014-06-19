@@ -1,3 +1,6 @@
-[submodule "advanced-tile-loader"]
-	path = advanced-tile-loader
+[submodule "lib/advanced-tiled-loader"]
+	path = lib/advanced-tiled-loader
 	url = https://github.com/Kadoba/Advanced-Tiled-Loader
+[submodule "lib/bump"]
+	path = lib/bump
+	url = https://github.com/kikito/bump.lua.git

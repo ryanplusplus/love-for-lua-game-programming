@@ -1,4 +1,4 @@
-local loader = require('advanced-tile-loader/Loader')
+local loader = require('lib/advanced-tiled-loader/Loader')
 
 bg = love.graphics.newImage('res/background.png')
 

@@ -1,0 +1,3 @@
+[submodule "advanced-tile-loader"]
+	path = advanced-tile-loader
+	url = https://github.com/Kadoba/Advanced-Tiled-Loader

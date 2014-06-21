@@ -15,6 +15,8 @@ local playerCollideBoxY = 4
 
 local map
 
+local blocks = {}
+
 local player
 local playerSprite = love.graphics.newImage('res/sprite.png')
 
@@ -42,12 +44,14 @@ function PlayerMovement(dt)
     end
   end
 
+  local dx = 0
+
   if love.keyboard.isDown('left') then
-    player.l = player.l - player.speed *dt
+    dx = -(player.speed * dt)
     player.animation = playerWalkLeft
     player.dir = -1
   elseif love.keyboard.isDown('right') then
-    player.l = player.l + player.speed *dt
+    dx = player.speed * dt
     player.animation = playerWalkRight
     player.dir = 1
   else
@@ -58,8 +62,18 @@ function PlayerMovement(dt)
     end
   end
 
+  if player.jumpTimer > 0 then
+    player.jumpTimer = player.jumpTimer - dt
+  end
+
   player.vY = player.vY + gravity * dt
-  player.t = player.t + player.vY * dt
+
+  local dy = player.vY * dt
+
+  player.t = player.t + dy
+  player.l = player.l + dx
+
+  -- CheckPlayerCollisionWithPlatform(dx, dy)
 
   player.animation:update(dt)
 end
@@ -83,11 +97,44 @@ function PlayerSpawn(x, y)
     jumpRel = false,
     jumpForce = 0,
     jumpAccel = -200,
+    jumpTimer = 0,
     speed = 100,
     animation = playerIdleRight
   }
 
   world:add(player, player.l, player.t, player.w, player.h)
+end
+
+function CheckPlayerCollisionWithPlatform(dx, dy)
+  for _, v in pairs(blocks) do
+    while true do
+      local collisions = world:check(player, player.l, player.t, player.w, player.h)
+
+      if collisions then
+        for _, obj in pairs(collisions) do
+          CollidePlayerWithPlatform(dx, dy, obj)
+       end
+     end
+    end
+  end
+end
+
+function CollidePlayerWithPlatform(dx, dy, obj)
+  if dy < 0 and obj.t > player.t then
+    player.onGround = true
+    player.isJumping = false
+    player.vY = 0
+  elseif dy > 0 then
+    player.vY = 0
+  end
+
+  player.l = player.l + dx
+  player.t = player.t + dy
+end
+
+function Die()
+  player.l = 32
+  player.t = 32
 end
 
 function DrawPlayer()
@@ -100,7 +147,6 @@ function LoadTileMap(levelFile)
   map.drawObjects = false
 end
 
-local blocks = {}
 function FindSolidTiles(map)
   local layer = map.layers['platform']
   for tileX = 1, map.width do

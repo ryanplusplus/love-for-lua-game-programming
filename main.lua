@@ -4,6 +4,8 @@ local anim8 = require('lib/anim8/anim8')
 
 local world = bump.newWorld()
 
+local gravity = 400
+
 local tWidth = 16
 local tHeight = 16
 
@@ -27,6 +29,19 @@ local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
 local bg = love.graphics.newImage('res/background.png')
 
 function PlayerMovement(dt)
+  if player.onGround then
+    if player.jumpRel then
+      player.vY = player.jumpAccel
+      player.isJumping = true
+      player.jumpRel = false
+      player.jumpTimer = 0.065
+    end
+  elseif player.isJumping and player.jumpRel == false then
+    if player.jumpTimer > 0 then
+      player.vY = player.vY + player.jumpAccel * dt
+    end
+  end
+
   if love.keyboard.isDown('left') then
     player.l = player.l - player.speed *dt
     player.animation = playerWalkLeft
@@ -43,6 +58,9 @@ function PlayerMovement(dt)
     end
   end
 
+  player.vY = player.vY + gravity * dt
+  player.t = player.t + player.vY * dt
+
   player.animation:update(dt)
 end
 
@@ -52,7 +70,7 @@ function PlayerSpawn(x, y)
   local height = 32 - playerCollideBoxY
 
   player = {
-    name = "player",
+    name = 'player',
     sprite = playerSprite,
     l = x,
     t = y + playerCollideBoxY,
@@ -60,9 +78,11 @@ function PlayerSpawn(x, y)
     h = height,
     vY = 0,
     dir = 1,
-    onGround = false,
+    onGround = true,
     jumping = false,
-    jumpRel = true,
+    jumpRel = false,
+    jumpForce = 0,
+    jumpAccel = -200,
     speed = 100,
     animation = playerIdleRight
   }
@@ -92,6 +112,12 @@ function FindSolidTiles(map)
         world:add(block, block.l, block.t, block.w, block.h)
       end
     end
+  end
+end
+
+function love.keypressed(k)
+  if k == 'up' or k == 'x' then
+    player.jumpRel = true
   end
 end
 

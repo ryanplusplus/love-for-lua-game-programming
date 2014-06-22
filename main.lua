@@ -85,6 +85,8 @@ function PlayerMovement(dt)
 
   world:move(player, player.l, player.t, player.w, player.h)
 
+  if player.t > map.height * tHeight then Die() end
+
   player.animation:update(dt)
 end
 
@@ -132,8 +134,10 @@ function CheckPlayerCollisionWithPlatform(dx, dy)
 end
 
 function Die()
-  player.l = 32
-  player.t = 32
+  player.l = 20
+  player.t = 10
+  player.dir = 1
+  player.vY = 0
 end
 
 function DrawPlayer()
@@ -168,7 +172,7 @@ end
 
 function love.load()
   LoadTileMap('res/map.tmx')
-  PlayerSpawn(30, 50)
+  PlayerSpawn(20, 10)
 end
 
 function love.draw()

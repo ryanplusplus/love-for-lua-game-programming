@@ -73,14 +73,15 @@ function PlayerMovement(dt)
   player.t = player.t + dy
   player.l = player.l + dx
 
-  -- CheckPlayerCollisionWithPlatform(dx, dy)
+  CheckPlayerCollisionWithPlatform(dx, dy)
 
+  world:move(player, player.l, player.t, player.w, player.h)
   player.animation:update(dt)
 end
 
 function PlayerSpawn(x, y)
   local left = x + playerCollideBoxL
-  local right = 32
+  local width = 32 - playerCollideBoxL - playerCollideBoxR
   local height = 32 - playerCollideBoxY
 
   player = {
@@ -88,7 +89,7 @@ function PlayerSpawn(x, y)
     sprite = playerSprite,
     l = x,
     t = y + playerCollideBoxY,
-    w = right,
+    w = width,
     h = height,
     vY = 0,
     dir = 1,
@@ -106,30 +107,24 @@ function PlayerSpawn(x, y)
 end
 
 function CheckPlayerCollisionWithPlatform(dx, dy)
-  for _, v in pairs(blocks) do
-    while true do
-      local collisions = world:check(player, player.l, player.t, player.w, player.h)
-
-      if collisions then
-        for _, obj in pairs(collisions) do
-          CollidePlayerWithPlatform(dx, dy, obj)
-       end
-     end
-    end
+  for _, collision in pairs(world:check(player) or {}) do
+    CollidePlayerWithPlatform(dx, dy, collision.other)
   end
 end
 
 function CollidePlayerWithPlatform(dx, dy, obj)
-  if dy < 0 and obj.t > player.t then
+  if dx > 0 and obj.l > player.l then
+    player.l = obj.l - player.w
+  elseif dx < 0 and obj.l < player.l then
+    player.l = player.l - dx
+  end
+
+  if dy > 0 and obj.t > player.t then
     player.onGround = true
     player.isJumping = false
     player.vY = 0
-  elseif dy > 0 then
-    player.vY = 0
+    player.t = obj.t - player.h
   end
-
-  player.l = player.l + dx
-  player.t = player.t + dy
 end
 
 function Die()
@@ -153,8 +148,8 @@ function FindSolidTiles(map)
     for tileY = 1, map.height do
       local tile = layer(tileX - 1, tileY - 1)
       if tile then
-        local block = {l = (tileX - 1) * 16, t = (tileY - 1) * 16, w = tWidth, h = tHeight}
-        blocks[#blocks + 1] = block
+        local block = {l = (tileX - 1) * 16, t = (tileY - 1) * 16, w = tWidth, h = tHeight, coordinates = {tileX, tileY}}
+        blocks[block] = true
         world:add(block, block.l, block.t, block.w, block.h)
       end
     end
@@ -169,7 +164,7 @@ end
 
 function love.load()
   LoadTileMap('res/map.tmx')
-  PlayerSpawn(50, 40)
+  PlayerSpawn(30, 50)
 end
 
 function love.draw()

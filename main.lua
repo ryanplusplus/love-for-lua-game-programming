@@ -4,7 +4,7 @@ local anim8 = require('lib/anim8/anim8')
 
 local world = bump.newWorld()
 
-local gravity = 400
+local gravity = 900
 
 local tWidth = 16
 local tHeight = 16
@@ -38,21 +38,29 @@ function PlayerMovement(dt)
       player.jumpRel = false
       player.jumpTimer = 0.065
     end
-  elseif player.isJumping and player.jumpRel == false then
-    if player.jumpTimer > 0 then
-      player.vY = player.vY + player.jumpAccel * dt
-    end
+  elseif player.jumpRel == false and player.jumpTimer > 0 then
+    player.vY = player.vY + player.jumpAccel * dt
+  else
+    player.jumpRel = false
   end
 
   local dx = 0
 
   if love.keyboard.isDown('left') then
     dx = -(player.speed * dt)
-    player.animation = playerWalkLeft
+    if player.isJumping then
+      player.animation = playerIdleLeft
+    else
+      player.animation = playerWalkLeft
+    end
     player.dir = -1
   elseif love.keyboard.isDown('right') then
     dx = player.speed * dt
-    player.animation = playerWalkRight
+    if player.isJumping then
+      player.animation = playerIdleRight
+    else
+      player.animation = playerWalkRight
+    end
     player.dir = 1
   else
     if player.dir > 0 then
@@ -70,12 +78,13 @@ function PlayerMovement(dt)
 
   local dy = player.vY * dt
 
+  dx, dy = CheckPlayerCollisionWithPlatform(dx, dy)
+
   player.t = player.t + dy
   player.l = player.l + dx
 
-  CheckPlayerCollisionWithPlatform(dx, dy)
-
   world:move(player, player.l, player.t, player.w, player.h)
+
   player.animation:update(dt)
 end
 
@@ -97,7 +106,7 @@ function PlayerSpawn(x, y)
     jumping = false,
     jumpRel = false,
     jumpForce = 0,
-    jumpAccel = -200,
+    jumpAccel = -350,
     jumpTimer = 0,
     speed = 100,
     animation = playerIdleRight
@@ -107,24 +116,19 @@ function PlayerSpawn(x, y)
 end
 
 function CheckPlayerCollisionWithPlatform(dx, dy)
-  for _, collision in pairs(world:check(player) or {}) do
-    CollidePlayerWithPlatform(dx, dy, collision.other)
+  player.onGround = false
+  for _, collision in pairs(world:check(player, player.l + dx, player.t + dy) or {}) do
+    local obj = collision.other
+    if (player.t + player.h - 0.5) <= obj.t and (player.t + player.h + dy) > obj.t then
+      player.onGround = true
+      player.isJumping = false
+      player.vY = 0
+      dy = -(player.t + player.h - obj.t)
+      break
+    end
   end
-end
 
-function CollidePlayerWithPlatform(dx, dy, obj)
-  if dx > 0 and obj.l > player.l then
-    player.l = obj.l - player.w
-  elseif dx < 0 and obj.l < player.l then
-    player.l = player.l - dx
-  end
-
-  if dy > 0 and obj.t > player.t then
-    player.onGround = true
-    player.isJumping = false
-    player.vY = 0
-    player.t = obj.t - player.h
-  end
+  return dx, dy
 end
 
 function Die()

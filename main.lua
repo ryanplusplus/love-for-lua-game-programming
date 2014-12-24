@@ -1,6 +1,9 @@
-local bump = require('lib/bump/bump')
-local loader = require('lib/advanced-tiled-loader/Loader')
-local anim8 = require('lib/anim8/anim8')
+local bump = require 'lib/bump/bump'
+local loader = require 'lib/advanced-tiled-loader/Loader'
+local anim8 = require 'lib/anim8/anim8'
+local Scene = require 'scene'
+
+local scene
 
 local world = bump.newWorld()
 
@@ -171,16 +174,22 @@ function love.keypressed(k)
 end
 
 function love.load()
+  scene = Scene()
+
+  scene:add_render_system(function() love.graphics.draw(bg) end)
+  scene:add_render_system(function() map:draw() end)
+  scene:add_render_system(DrawPlayer)
+
+  scene:add_update_system(function(scene, dt) PlayerMovement(dt) end)
+
   LoadTileMap('res/map.tmx')
   PlayerSpawn(20, 10)
 end
 
 function love.draw()
-  love.graphics.draw(bg)
-  map:draw()
-  DrawPlayer()
+  scene:render()
 end
 
 function love.update(dt)
-  PlayerMovement(dt)
+  scene:update(dt)
 end

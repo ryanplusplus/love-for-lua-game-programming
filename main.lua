@@ -31,8 +31,6 @@ local playerJumpLeft = anim8.newAnimation(a8(4, 1), 0.1); playerJumpLeft:flipH()
 local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
 local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
 
-local bg = love.graphics.newImage('res/background.png')
-
 function PlayerMovement(dt)
   if player.onGround then
     if player.jumpRel then
@@ -167,6 +165,12 @@ function FindSolidTiles(map)
   end
 end
 
+function draw_backgrounds(scene)
+  for entity in pairs(scene:entities_with('background', 'drawable')) do
+    love.graphics.draw(entity.drawable)
+  end
+end
+
 function love.keypressed(k)
   if k == 'up' or k == 'x' then
     player.jumpRel = true
@@ -176,11 +180,16 @@ end
 function love.load()
   scene = Scene()
 
-  scene:add_render_system(function() love.graphics.draw(bg) end)
+  scene:add_render_system(draw_backgrounds)
   scene:add_render_system(function() map:draw() end)
   scene:add_render_system(DrawPlayer)
 
   scene:add_update_system(function(scene, dt) PlayerMovement(dt) end)
+
+  scene:new_entity({
+    background = true,
+    drawable = love.graphics.newImage('res/background.png')
+  })
 
   LoadTileMap('res/map.tmx')
   PlayerSpawn(20, 10)

@@ -32,8 +32,8 @@ local playerJumpLeft = anim8.newAnimation(a8(4, 1), 0.1); playerJumpLeft:flipH()
 local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
 local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
 
-function PlayerMovement(scene, dt)
-  for entity in pairs(scene:entities_with('player')) do
+function player_movement(scene, dt)
+  for entity in pairs(scene:entities_with('player', 'animation')) do
     local player = entity.player
 
     if player.onGround then
@@ -58,24 +58,24 @@ function PlayerMovement(scene, dt)
     if love.keyboard.isDown('left') then
       dx = -(player.speed * dt)
       if player.isJumping then
-        player.animation = playerIdleLeft
+        entity.animation = playerIdleLeft
       else
-        player.animation = playerWalkLeft
+        entity.animation = playerWalkLeft
       end
       player.dir = -1
     elseif love.keyboard.isDown('right') then
       dx = player.speed * dt
       if player.isJumping then
-        player.animation = playerIdleRight
+        entity.animation = playerIdleRight
       else
-        player.animation = playerWalkRight
+        entity.animation = playerWalkRight
       end
       player.dir = 1
     else
       if player.dir > 0 then
-        player.animation = playerIdleRight
+        entity.animation = playerIdleRight
       else
-        player.animation = playerIdleLeft
+        entity.animation = playerIdleLeft
       end
     end
 
@@ -94,9 +94,7 @@ function PlayerMovement(scene, dt)
 
     world:move(player, player.l, player.t, player.w, player.h)
 
-    if player.t > map.height * tHeight then Die() end
-
-    player.animation:update(dt)
+    if player.t > map.height * tHeight then Die(player) end
   end
 end
 
@@ -122,8 +120,8 @@ function SpawnPlayer(scene, x, y)
       jumpAccel = -350,
       jumpTimer = 0,
       speed = 100,
-      animation = playerIdleRight
-    }
+    },
+    animation = playerIdleRight
   })
 
   world:add(entity.player, entity.player.l, entity.player.t, entity.player.w, entity.player.h)
@@ -145,7 +143,7 @@ function CheckPlayerCollisionWithPlatform(player, dx, dy)
   return dx, dy
 end
 
-function Die()
+function Die(player)
   player.l = 20
   player.t = 10
   player.dir = 1
@@ -153,9 +151,9 @@ function Die()
 end
 
 function DrawPlayer(scene)
-  for entity in pairs(scene:entities_with('player')) do
+  for entity in pairs(scene:entities_with('player', 'animation')) do
     local player = entity.player
-    player.animation:draw(player.sprite, player.l - playerCollideBoxL, player.t - playerCollideBoxY)
+    entity.animation:draw(player.sprite, player.l - playerCollideBoxL, player.t - playerCollideBoxY)
   end
 end
 
@@ -185,12 +183,18 @@ function draw_backgrounds(scene)
   end
 end
 
+function update_animations(scene, dt)
+  for entity in pairs(scene:entities_with('animation')) do
+    entity.animation:update(dt)
+  end
+end
+
 function reset_keys()
-  keys = {}
+  key_pressed = {}
 end
 
 function love.keypressed(k)
-  keys[k] = true
+  key_pressed[k] = true
 end
 
 function love.load()
@@ -200,7 +204,8 @@ function love.load()
   scene:add_render_system(function() map:draw() end)
   scene:add_render_system(DrawPlayer)
 
-  scene:add_update_system(PlayerMovement)
+  scene:add_update_system(player_movement)
+  scene:add_update_system(update_animations)
   scene:add_update_system(reset_keys)
 
   scene:new_entity({

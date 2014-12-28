@@ -84,8 +84,6 @@ function player_movement(scene, dt)
     end
 
     entity.velocity.y = entity.velocity.y + gravity * dt
-
-    if entity.position.y > map.height * tHeight then Die(entity) end
   end
 end
 
@@ -95,6 +93,7 @@ function SpawnPlayer(scene, x, y)
   local height = 32 - playerCollideBoxY
 
   local entity = scene:new_entity({
+    dies_when_off_stage = true,
     position = {
       x = x,
       y = y + playerCollideBoxY
@@ -111,8 +110,8 @@ function SpawnPlayer(scene, x, y)
       x = 0,
       y = 0
     },
+    name = 'player',
     player = {
-      name = 'player',
       sprite = playerSprite,
       dir = 1,
       onGround = true,
@@ -147,13 +146,6 @@ function CheckPlayerCollisionWithPlatform(entity, dx, dy)
   end
 
   return dx, dy
-end
-
-function Die(entity)
-  entity.position.x = 20
-  entity.position.y = 10
-  entity.player.dir = 1
-  entity.velocity.y = 0
 end
 
 function DrawPlayer(scene)
@@ -209,6 +201,17 @@ function update_position(scene, dt)
   end
 end
 
+function die_when_off_stage(scene, dt)
+  for entity in pairs(scene:entities_with('player', 'dies_when_off_stage', 'position', 'velocity')) do
+    if entity.position.y > map.height * tHeight then
+      entity.position.x = 20
+      entity.position.y = 10
+      entity.player.dir = 1
+      entity.velocity.y = 0
+    end
+  end
+end
+
 function reset_keys()
   key_pressed = {}
 end
@@ -226,6 +229,7 @@ function love.load()
 
   scene:add_update_system(player_movement)
   scene:add_update_system(update_position)
+  scene:add_update_system(die_when_off_stage)
   scene:add_update_system(update_animations)
   scene:add_update_system(reset_keys)
 

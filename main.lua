@@ -87,14 +87,14 @@ function player_movement(scene, dt)
 
     local dy = player.vY * dt
 
-    dx, dy = CheckPlayerCollisionWithPlatform(player, dx, dy)
+    dx, dy = CheckPlayerCollisionWithPlatform(player, entity.position, dx, dy)
 
-    player.t = player.t + dy
-    player.l = player.l + dx
+    entity.position.y = entity.position.y + dy
+    entity.position.x = entity.position.x + dx
 
-    world:move(player, player.l, player.t, player.w, player.h)
+    world:move(player, entity.position.x, entity.position.y, player.w, player.h)
 
-    if player.t > map.height * tHeight then Die(player) end
+    if entity.position.y > map.height * tHeight then Die(player) end
   end
 end
 
@@ -104,11 +104,15 @@ function SpawnPlayer(scene, x, y)
   local height = 32 - playerCollideBoxY
 
   local entity = scene:new_entity({
+    position = {
+      x = x,
+      y = y + playerCollideBoxY
+    },
     player = {
       name = 'player',
       sprite = playerSprite,
-      l = x,
-      t = y + playerCollideBoxY,
+      -- l = x,
+      -- t = y + playerCollideBoxY,
       w = width,
       h = height,
       vY = 0,
@@ -124,18 +128,18 @@ function SpawnPlayer(scene, x, y)
     animation = playerIdleRight
   })
 
-  world:add(entity.player, entity.player.l, entity.player.t, entity.player.w, entity.player.h)
+  world:add(entity.player, entity.position.x, entity.position.y, entity.player.w, entity.player.h)
 end
 
-function CheckPlayerCollisionWithPlatform(player, dx, dy)
+function CheckPlayerCollisionWithPlatform(player, position, dx, dy)
   player.onGround = false
-  for _, collision in pairs(world:check(player, player.l + dx, player.t + dy) or {}) do
+  for _, collision in pairs(world:check(player, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
-    if (player.t + player.h - 0.5) <= obj.t and (player.t + player.h + dy) > obj.t then
+    if (position.y + player.h - 0.5) <= obj.t and (position.y + player.h + dy) > obj.t then
       player.onGround = true
       player.isJumping = false
       player.vY = 0
-      dy = -(player.t + player.h - obj.t)
+      dy = -(position.y + player.h - obj.t)
       break
     end
   end
@@ -151,9 +155,9 @@ function Die(player)
 end
 
 function DrawPlayer(scene)
-  for entity in pairs(scene:entities_with('player', 'animation')) do
+  for entity in pairs(scene:entities_with('player', 'animation', 'position')) do
     local player = entity.player
-    entity.animation:draw(player.sprite, player.l - playerCollideBoxL, player.t - playerCollideBoxY)
+    entity.animation:draw(player.sprite, entity.position.x - playerCollideBoxL, entity.position.y - playerCollideBoxY)
   end
 end
 

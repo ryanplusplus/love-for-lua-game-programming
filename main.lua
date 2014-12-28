@@ -11,8 +11,8 @@ local key_pressed = {}
 
 local gravity = 900
 
-local tWidth = 16
-local tHeight = 16
+local tile_width = 16
+local tile_height = 16
 
 local playerCollideBoxL = 8
 local playerCollideBoxR = 8
@@ -32,62 +32,34 @@ local playerJumpLeft = anim8.newAnimation(a8(4, 1), 0.1); playerJumpLeft:flipH()
 local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
 local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
 
-function player_movement(scene, dt)
-  for entity in pairs(scene:entities_with('player', 'animation', 'position', 'size')) do
-    local player = entity.player
-
-    if player.onGround then
-      if player.jumpRel then
-        entity.velocity.y = player.jumpAccel
-        player.isJumping = true
-        player.jumpRel = false
-        player.jumpTimer = 0.065
+function update_jump(scene, dt)
+  for entity in pairs(scene:entities_with('animation', 'position', 'size', 'jump')) do
+    if entity.on_ground then
+      if entity.jump.jump_rel then
+        entity.velocity.y = entity.jump.jump_acceleration
+        entity.jump.jumping = true
+        entity.jump.jump_rel = false
+        entity.jump.jump_timer = 0.065
       end
-    elseif player.jumpRel == false and player.jumpTimer > 0 then
-      entity.velocity.y = entity.velocity.y + player.jumpAccel * dt
+    elseif entity.jump.jump_rel == false and entity.jump.jump_timer > 0 then
+      entity.velocity.y = entity.velocity.y + entity.jump.jump_acceleration * dt
     else
-      player.jumpRel = false
+      entity.jump.jump_rel = false
     end
 
-    if key_pressed['up'] or key_pressed['x'] then
-      player.jumpRel = true
+    if key_pressed[entity.jump.key] then
+      entity.jump.jump_rel = true
     end
 
-    entity.velocity.x = 0
-
-    if love.keyboard.isDown('left') then
-      entity.velocity.x = -player.speed
-      if player.isJumping then
-        entity.animation = playerIdleLeft
-      else
-        entity.animation = playerWalkLeft
-      end
-      player.dir = -1
-    elseif love.keyboard.isDown('right') then
-      entity.velocity.x = player.speed
-      if player.isJumping then
-        entity.animation = playerIdleRight
-      else
-        entity.animation = playerWalkRight
-      end
-      player.dir = 1
-    else
-      if player.dir > 0 then
-        entity.animation = playerIdleRight
-      else
-        entity.animation = playerIdleLeft
-      end
-    end
-
-    if player.jumpTimer > 0 then
-      player.jumpTimer = player.jumpTimer - dt
+    if entity.jump.jump_timer > 0 then
+      entity.jump.jump_timer = entity.jump.jump_timer - dt
     end
 
     entity.velocity.y = entity.velocity.y + gravity * dt
   end
 end
 
-function SpawnPlayer(scene, x, y)
+function SpawnPlayer(scene, x, y, controls)
   local left = x + playerCollideBoxL
   local width = 32 - playerCollideBoxL - playerCollideBoxR
   local height = 32 - playerCollideBoxY
@@ -111,16 +83,22 @@ function SpawnPlayer(scene, x, y)
       y = 0
     },
     name = 'player',
+    direction = 1,
+    left_right = {
+      left_key = controls.left,
+      right_key = controls.right,
+      speed = 100
+    },
+    on_ground = true,
+    jump = {
+      jumping = false,
+      jump_rel = false,
+      jump_acceleration = -350,
+      jump_timer = 0,
+      key = controls.jump
+    },
     player = {
       sprite = playerSprite,
-      dir = 1,
-      onGround = true,
-      jumping = false,
-      jumpRel = false,
-      jumpForce = 0,
-      jumpAccel = -350,
-      jumpTimer = 0,
-      speed = 100,
     },
     animation = playerIdleRight
   })
@@ -133,14 +111,14 @@ function CheckPlayerCollisionWithPlatform(entity, dx, dy)
   local size = entity.size
   local position = entity.position
   local velocity = entity.velocity
-  player.onGround = false
+  entity.on_ground = false
   for _, collision in pairs(world:check(entity, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
-    if (position.y + size.height - 0.5) <= obj.t and (position.y + size.height + dy) > obj.t then
-      player.onGround = true
-      player.isJumping = false
+    if (position.y + size.height - 0.5) <= obj.position.y and (position.y + size.height + dy) > obj.position.y then
+      entity.on_ground = true
+      entity.jump.jumping = false
       velocity.y = 0
-      dy = -(position.y + size.height - obj.t)
+      dy = -(position.y + size.height - obj.position.y)
       break
     end
   end
@@ -148,37 +126,50 @@ function CheckPlayerCollisionWithPlatform(entity, dx, dy)
   return dx, dy
 end
 
-function DrawPlayer(scene)
+function render_player(scene)
   for entity in pairs(scene:entities_with('player', 'animation', 'position')) do
     local player = entity.player
     entity.animation:draw(player.sprite, entity.position.x - playerCollideBoxL, entity.position.y - playerCollideBoxY)
   end
 end
 
-function LoadTileMap(levelFile)
+function load_tile_map(levelFile)
   map = loader.load(levelFile)
-  FindSolidTiles(map)
+  find_solid_tiles(map)
   map.drawObjects = false
 end
 
-function FindSolidTiles(map)
+function find_solid_tiles(map)
   local layer = map.layers['platform']
   for tileX = 1, map.width do
     for tileY = 1, map.height do
       local tile = layer(tileX - 1, tileY - 1)
       if tile then
-        local block = {l = (tileX - 1) * 16, t = (tileY - 1) * 16, w = tWidth, h = tHeight, coordinates = {tileX, tileY}}
+        local block = {
+          position = {
+            x = (tileX - 1) * 16,
+            y = (tileY - 1) * 16
+          },
+          size = {
+            width = tile_width,
+            height = tile_height
+          }
+        }
         blocks[block] = true
-        world:add(block, block.l, block.t, block.w, block.h)
+        world:add(block, block.position.x, block.position.y, block.size.width, block.size.height)
       end
     end
   end
 end
 
-function draw_backgrounds(scene)
+function render_background(scene)
   for entity in pairs(scene:entities_with('background', 'drawable')) do
     love.graphics.draw(entity.drawable)
   end
+end
+
+function render_map(scene)
+  map:draw()
 end
 
 function update_animations(scene, dt)
@@ -202,12 +193,42 @@ function update_position(scene, dt)
 end
 
 function die_when_off_stage(scene, dt)
-  for entity in pairs(scene:entities_with('player', 'dies_when_off_stage', 'position', 'velocity')) do
-    if entity.position.y > map.height * tHeight then
+  for entity in pairs(scene:entities_with('dies_when_off_stage', 'position', 'velocity')) do
+    if entity.position.y > map.height * tile_height then
       entity.position.x = 20
       entity.position.y = 10
-      entity.player.dir = 1
+      entity.direction = 1
       entity.velocity.y = 0
+    end
+  end
+end
+
+function update_left_right(scene, dt)
+  for entity in pairs(scene:entities_with('animation', 'position', 'left_right')) do
+    entity.velocity.x = 0
+
+    if love.keyboard.isDown(entity.left_right.left_key) then
+      entity.velocity.x = -entity.left_right.speed
+      if entity.jump.jumping then
+        entity.animation = playerIdleLeft
+      else
+        entity.animation = playerWalkLeft
+      end
+      entity.direction = -1
+    elseif love.keyboard.isDown(entity.left_right.right_key) then
+      entity.velocity.x = entity.left_right.speed
+      if entity.jump.jumping then
+        entity.animation = playerIdleRight
+      else
+        entity.animation = playerWalkRight
+      end
+      entity.direction = 1
+    else
+      if entity.direction > 0 then
+        entity.animation = playerIdleRight
+      else
+        entity.animation = playerIdleLeft
+      end
     end
   end
 end
@@ -223,11 +244,12 @@ end
 function love.load()
   scene = Scene()
 
-  scene:add_render_system(draw_backgrounds)
-  scene:add_render_system(function() map:draw() end)
-  scene:add_render_system(DrawPlayer)
+  scene:add_render_system(render_background)
+  scene:add_render_system(render_map)
+  scene:add_render_system(render_player)
 
-  scene:add_update_system(player_movement)
+  scene:add_update_system(update_jump)
+  scene:add_update_system(update_left_right)
   scene:add_update_system(update_position)
   scene:add_update_system(die_when_off_stage)
   scene:add_update_system(update_animations)
@@ -238,8 +260,9 @@ function love.load()
     drawable = love.graphics.newImage('res/background.png')
   })
 
-  LoadTileMap('res/map.tmx')
-  SpawnPlayer(scene, 20, 10)
+  load_tile_map('res/map.tmx')
+  SpawnPlayer(scene, 20, 10, { left = 'left', right = 'right', jump = 'up' })
+  SpawnPlayer(scene, 50, 10, { left = 'z', right = 'x', jump = 's' })
 end
 
 function love.draw()

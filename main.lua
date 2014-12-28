@@ -85,16 +85,6 @@ function player_movement(scene, dt)
 
     entity.velocity.y = entity.velocity.y + gravity * dt
 
-    local dy = entity.velocity.y * dt
-    local dx = entity.velocity.x * dt
-
-    dx, dy = CheckPlayerCollisionWithPlatform(entity, dx, dy)
-
-    entity.position.y = entity.position.y + dy
-    entity.position.x = entity.position.x + dx
-
-    world:move(player, entity.position.x, entity.position.y, player.w, player.h)
-
     if entity.position.y > map.height * tHeight then Die(entity) end
   end
 end
@@ -136,7 +126,7 @@ function SpawnPlayer(scene, x, y)
     animation = playerIdleRight
   })
 
-  world:add(entity.player, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
+  world:add(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
 end
 
 function CheckPlayerCollisionWithPlatform(entity, dx, dy)
@@ -145,7 +135,7 @@ function CheckPlayerCollisionWithPlatform(entity, dx, dy)
   local position = entity.position
   local velocity = entity.velocity
   player.onGround = false
-  for _, collision in pairs(world:check(player, position.x + dx, position.y + dy) or {}) do
+  for _, collision in pairs(world:check(entity, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
     if (position.y + size.height - 0.5) <= obj.t and (position.y + size.height + dy) > obj.t then
       player.onGround = true
@@ -205,6 +195,20 @@ function update_animations(scene, dt)
   end
 end
 
+function update_position(scene, dt)
+  for entity in pairs(scene:entities_with('velocity', 'position')) do
+    local dy = entity.velocity.y * dt
+    local dx = entity.velocity.x * dt
+
+    dx, dy = CheckPlayerCollisionWithPlatform(entity, dx, dy)
+
+    entity.position.y = entity.position.y + dy
+    entity.position.x = entity.position.x + dx
+
+    world:move(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
+  end
+end
+
 function reset_keys()
   key_pressed = {}
 end
@@ -221,6 +225,7 @@ function love.load()
   scene:add_render_system(DrawPlayer)
 
   scene:add_update_system(player_movement)
+  scene:add_update_system(update_position)
   scene:add_update_system(update_animations)
   scene:add_update_system(reset_keys)
 

@@ -33,7 +33,7 @@ local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
 local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
 
 function player_movement(scene, dt)
-  for entity in pairs(scene:entities_with('player', 'animation')) do
+  for entity in pairs(scene:entities_with('player', 'animation', 'position', 'size')) do
     local player = entity.player
 
     if player.onGround then
@@ -87,14 +87,14 @@ function player_movement(scene, dt)
 
     local dy = player.vY * dt
 
-    dx, dy = CheckPlayerCollisionWithPlatform(player, entity.position, dx, dy)
+    dx, dy = CheckPlayerCollisionWithPlatform(player, entity.position, entity.size, dx, dy)
 
     entity.position.y = entity.position.y + dy
     entity.position.x = entity.position.x + dx
 
     world:move(player, entity.position.x, entity.position.y, player.w, player.h)
 
-    if entity.position.y > map.height * tHeight then Die(player) end
+    if entity.position.y > map.height * tHeight then Die(entity) end
   end
 end
 
@@ -108,13 +108,13 @@ function SpawnPlayer(scene, x, y)
       x = x,
       y = y + playerCollideBoxY
     },
+    size = {
+      width = width,
+      height = height
+    },
     player = {
       name = 'player',
       sprite = playerSprite,
-      -- l = x,
-      -- t = y + playerCollideBoxY,
-      w = width,
-      h = height,
       vY = 0,
       dir = 1,
       onGround = true,
@@ -128,18 +128,18 @@ function SpawnPlayer(scene, x, y)
     animation = playerIdleRight
   })
 
-  world:add(entity.player, entity.position.x, entity.position.y, entity.player.w, entity.player.h)
+  world:add(entity.player, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
 end
 
-function CheckPlayerCollisionWithPlatform(player, position, dx, dy)
+function CheckPlayerCollisionWithPlatform(player, position, size, dx, dy)
   player.onGround = false
   for _, collision in pairs(world:check(player, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
-    if (position.y + player.h - 0.5) <= obj.t and (position.y + player.h + dy) > obj.t then
+    if (position.y + size.height - 0.5) <= obj.t and (position.y + size.height + dy) > obj.t then
       player.onGround = true
       player.isJumping = false
       player.vY = 0
-      dy = -(position.y + player.h - obj.t)
+      dy = -(position.y + size.height - obj.t)
       break
     end
   end
@@ -147,11 +147,11 @@ function CheckPlayerCollisionWithPlatform(player, position, dx, dy)
   return dx, dy
 end
 
-function Die(player)
-  player.l = 20
-  player.t = 10
-  player.dir = 1
-  player.vY = 0
+function Die(entity)
+  entity.position.x = 20
+  entity.position.y = 10
+  entity.player.dir = 1
+  entity.player.vY = 0
 end
 
 function DrawPlayer(scene)

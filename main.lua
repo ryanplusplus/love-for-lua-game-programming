@@ -38,25 +38,25 @@ function player_movement(scene, dt)
 
     if player.onGround then
       if player.jumpRel then
-        player.vY = player.jumpAccel
+        entity.velocity.y = player.jumpAccel
         player.isJumping = true
         player.jumpRel = false
         player.jumpTimer = 0.065
       end
     elseif player.jumpRel == false and player.jumpTimer > 0 then
-      player.vY = player.vY + player.jumpAccel * dt
+      entity.velocity.y = entity.velocity.y + player.jumpAccel * dt
     else
       player.jumpRel = false
     end
-
-    local dx = 0
 
     if key_pressed['up'] or key_pressed['x'] then
       player.jumpRel = true
     end
 
+    entity.velocity.x = 0
+
     if love.keyboard.isDown('left') then
-      dx = -(player.speed * dt)
+      entity.velocity.x = -player.speed
       if player.isJumping then
         entity.animation = playerIdleLeft
       else
@@ -64,7 +64,7 @@ function player_movement(scene, dt)
       end
       player.dir = -1
     elseif love.keyboard.isDown('right') then
-      dx = player.speed * dt
+      entity.velocity.x = player.speed
       if player.isJumping then
         entity.animation = playerIdleRight
       else
@@ -83,11 +83,12 @@ function player_movement(scene, dt)
       player.jumpTimer = player.jumpTimer - dt
     end
 
-    player.vY = player.vY + gravity * dt
+    entity.velocity.y = entity.velocity.y + gravity * dt
 
-    local dy = player.vY * dt
+    local dy = entity.velocity.y * dt
+    local dx = entity.velocity.x * dt
 
-    dx, dy = CheckPlayerCollisionWithPlatform(player, entity.position, entity.size, dx, dy)
+    dx, dy = CheckPlayerCollisionWithPlatform(entity, dx, dy)
 
     entity.position.y = entity.position.y + dy
     entity.position.x = entity.position.x + dx
@@ -112,10 +113,17 @@ function SpawnPlayer(scene, x, y)
       width = width,
       height = height
     },
+    velocity = {
+      x = 0,
+      y = 0
+    },
+    acceleration = {
+      x = 0,
+      y = 0
+    },
     player = {
       name = 'player',
       sprite = playerSprite,
-      vY = 0,
       dir = 1,
       onGround = true,
       jumping = false,
@@ -131,14 +139,18 @@ function SpawnPlayer(scene, x, y)
   world:add(entity.player, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
 end
 
-function CheckPlayerCollisionWithPlatform(player, position, size, dx, dy)
+function CheckPlayerCollisionWithPlatform(entity, dx, dy)
+  local player = entity.player
+  local size = entity.size
+  local position = entity.position
+  local velocity = entity.velocity
   player.onGround = false
   for _, collision in pairs(world:check(player, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
     if (position.y + size.height - 0.5) <= obj.t and (position.y + size.height + dy) > obj.t then
       player.onGround = true
       player.isJumping = false
-      player.vY = 0
+      velocity.y = 0
       dy = -(position.y + size.height - obj.t)
       break
     end
@@ -151,7 +163,7 @@ function Die(entity)
   entity.position.x = 20
   entity.position.y = 10
   entity.player.dir = 1
-  entity.player.vY = 0
+  entity.velocity.y = 0
 end
 
 function DrawPlayer(scene)

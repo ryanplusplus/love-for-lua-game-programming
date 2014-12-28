@@ -59,9 +59,7 @@ end
 
 function update_gravity(scene, dt)
   for entity in pairs(scene:entities_with('has_mass', 'velocity')) do
-    if entity.on_ground == nil or entity.on_ground == false then
-      entity.velocity.y = entity.velocity.y + gravity * dt
-    end
+    entity.velocity.y = entity.velocity.y + gravity * dt
   end
 end
 

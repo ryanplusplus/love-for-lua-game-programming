@@ -54,12 +54,18 @@ function update_jump(scene, dt)
     if entity.jump.jump_timer > 0 then
       entity.jump.jump_timer = entity.jump.jump_timer - dt
     end
-
-    entity.velocity.y = entity.velocity.y + gravity * dt
   end
 end
 
-function SpawnPlayer(scene, x, y, controls)
+function update_gravity(scene, dt)
+  for entity in pairs(scene:entities_with('has_mass', 'velocity')) do
+    if entity.on_ground == nil or entity.on_ground == false then
+      entity.velocity.y = entity.velocity.y + gravity * dt
+    end
+  end
+end
+
+function spawn_player(scene, x, y, controls)
   local left = x + playerCollideBoxL
   local width = 32 - playerCollideBoxL - playerCollideBoxR
   local height = 32 - playerCollideBoxY
@@ -89,6 +95,7 @@ function SpawnPlayer(scene, x, y, controls)
       right_key = controls.right,
       speed = 100
     },
+    has_mass = true,
     on_ground = true,
     jump = {
       jumping = false,
@@ -106,7 +113,7 @@ function SpawnPlayer(scene, x, y, controls)
   world:add(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
 end
 
-function CheckPlayerCollisionWithPlatform(entity, dx, dy)
+function check_collisions(entity, dx, dy)
   local player = entity.player
   local size = entity.size
   local position = entity.position
@@ -183,7 +190,7 @@ function update_position(scene, dt)
     local dy = entity.velocity.y * dt
     local dx = entity.velocity.x * dt
 
-    dx, dy = CheckPlayerCollisionWithPlatform(entity, dx, dy)
+    dx, dy = check_collisions(entity, dx, dy)
 
     entity.position.y = entity.position.y + dy
     entity.position.x = entity.position.x + dx
@@ -250,6 +257,7 @@ function love.load()
 
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)
+  scene:add_update_system(update_gravity)
   scene:add_update_system(update_position)
   scene:add_update_system(die_when_off_stage)
   scene:add_update_system(update_animations)
@@ -261,8 +269,8 @@ function love.load()
   })
 
   load_tile_map('res/map.tmx')
-  SpawnPlayer(scene, 20, 10, { left = 'left', right = 'right', jump = 'up' })
-  SpawnPlayer(scene, 50, 10, { left = 'z', right = 'x', jump = 's' })
+  spawn_player(scene, 20, 10, { left = 'left', right = 'right', jump = 'up' })
+  spawn_player(scene, 50, 10, { left = 'z', right = 'x', jump = 's' })
 end
 
 function love.draw()

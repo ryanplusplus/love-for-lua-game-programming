@@ -209,25 +209,33 @@ function die_when_off_stage(scene, dt)
 end
 
 function update_left_right(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'position', 'left_right')) do
-    entity.velocity.x = 0
-
+  for entity in pairs(scene:entities_with('animation', 'position', 'left_right', 'jump', 'direction')) do
     if love.keyboard.isDown(entity.left_right.left_key) then
       entity.velocity.x = -entity.left_right.speed
+      entity.direction = -1
+    elseif love.keyboard.isDown(entity.left_right.right_key) then
+      entity.velocity.x = entity.left_right.speed
+      entity.direction = 1
+    else
+      entity.velocity.x = 0
+    end
+  end
+end
+
+function select_animation(scene, dt)
+  for entity in pairs(scene:entities_with('animation', 'position', 'velocity', 'left_right', 'jump', 'direction')) do
+    if entity.velocity.x < 0 then
       if entity.jump.jumping then
         entity.animation = playerIdleLeft
       else
         entity.animation = playerWalkLeft
       end
-      entity.direction = -1
-    elseif love.keyboard.isDown(entity.left_right.right_key) then
-      entity.velocity.x = entity.left_right.speed
+    elseif entity.velocity.x > 0 then
       if entity.jump.jumping then
         entity.animation = playerIdleRight
       else
         entity.animation = playerWalkRight
       end
-      entity.direction = 1
     else
       if entity.direction > 0 then
         entity.animation = playerIdleRight
@@ -255,6 +263,7 @@ function love.load()
 
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)
+  scene:add_update_system(select_animation)
   scene:add_update_system(update_gravity)
   scene:add_update_system(update_position)
   scene:add_update_system(die_when_off_stage)

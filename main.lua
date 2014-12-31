@@ -58,15 +58,15 @@ function spawn_player(scene, x, y, controls)
   local width = 32 - playerCollideBoxL - playerCollideBoxR
   local height = 32 - playerCollideBoxY
 
-  local playerSprite = love.graphics.newImage('res/sprite.png')
+  local sprite = love.graphics.newImage('res/sprite.png')
 
-  local a8 = anim8.newGrid(32, 32, playerSprite:getWidth(), playerSprite:getHeight())
-  local playerWalkRight = anim8.newAnimation(a8('1-8', 1), 0.1)
-  local playerWalkLeft = anim8.newAnimation(a8('8-1', 1), 0.1); playerWalkLeft:flipH()
-  local playerJumpRight = anim8.newAnimation(a8(4, 1), 0.1)
-  local playerJumpLeft = anim8.newAnimation(a8(4, 1), 0.1); playerJumpLeft:flipH()
-  local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
-  local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
+  local a8 = anim8.newGrid(32, 32, sprite:getWidth(), sprite:getHeight())
+  local walk_right = anim8.newAnimation(a8('1-8', 1), 0.1)
+  local walk_left = anim8.newAnimation(a8('8-1', 1), 0.1); walk_left:flipH()
+  local jump_right = anim8.newAnimation(a8(4, 1), 0.1)
+  local jump_left = anim8.newAnimation(a8(4, 1), 0.1); jump_left:flipH()
+  local idle_right = anim8.newAnimation(a8(1, 1), 0.1)
+  local idle_left = anim8.newAnimation(a8(1, 1), 0.1); idle_left:flipH()
 
   local entity = scene:new_entity({
     dies_when_off_stage = true,
@@ -103,16 +103,16 @@ function spawn_player(scene, x, y, controls)
       key = controls.jump
     },
     animation = {
-      current = playerIdleRight,
-      sprite = playerSprite
+      current = idle_right,
+      sprite = sprite
     },
     animated_movement = {
-      walk_right = playerWalkRight,
-      walk_left = playerWalkLeft,
-      air_right = playerJumpRight,
-      air_left = playerJumpLeft,
-      idle_right = playerIdleRight,
-      idle_left = playerIdleLeft
+      walk_right = walk_right,
+      walk_left = walk_left,
+      air_right = jump_right,
+      air_left = jump_left,
+      idle_right = idle_right,
+      idle_left = idle_left
     }
   })
 
@@ -244,10 +244,8 @@ function select_movement_animation(scene, dt)
       end
     else
       if entity.direction > 0 then
-        print('idle right')
         entity.animation.current = entity.animated_movement.idle_right
       else
-        print('idle left')
         entity.animation.current = entity.animated_movement.idle_left
       end
     end

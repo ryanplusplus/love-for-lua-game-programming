@@ -54,7 +54,6 @@ function update_gravity(scene, dt)
 end
 
 function spawn_player(scene, x, y, controls)
-  local left = x + playerCollideBoxL
   local width = 32 - playerCollideBoxL - playerCollideBoxR
   local height = 32 - playerCollideBoxY
 

@@ -22,16 +22,6 @@ local map
 
 local blocks = {}
 
-local playerSprite = love.graphics.newImage('res/sprite.png')
-
-local a8 = anim8.newGrid(32, 32, playerSprite:getWidth(), playerSprite:getHeight())
-local playerWalkRight = anim8.newAnimation(a8('1-8', 1), 0.1)
-local playerWalkLeft = anim8.newAnimation(a8('8-1', 1), 0.1); playerWalkLeft:flipH()
-local playerJumpRight = anim8.newAnimation(a8(4, 1), 0.1)
-local playerJumpLeft = anim8.newAnimation(a8(4, 1), 0.1); playerJumpLeft:flipH()
-local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
-local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
-
 function update_jump(scene, dt)
   for entity in pairs(scene:entities_with('animation', 'position', 'size', 'jump')) do
     if entity.on_ground then
@@ -68,6 +58,16 @@ function spawn_player(scene, x, y, controls)
   local width = 32 - playerCollideBoxL - playerCollideBoxR
   local height = 32 - playerCollideBoxY
 
+  local playerSprite = love.graphics.newImage('res/sprite.png')
+
+  local a8 = anim8.newGrid(32, 32, playerSprite:getWidth(), playerSprite:getHeight())
+  local playerWalkRight = anim8.newAnimation(a8('1-8', 1), 0.1)
+  local playerWalkLeft = anim8.newAnimation(a8('8-1', 1), 0.1); playerWalkLeft:flipH()
+  local playerJumpRight = anim8.newAnimation(a8(4, 1), 0.1)
+  local playerJumpLeft = anim8.newAnimation(a8(4, 1), 0.1); playerJumpLeft:flipH()
+  local playerIdleRight = anim8.newAnimation(a8(1, 1), 0.1)
+  local playerIdleLeft = anim8.newAnimation(a8(1, 1), 0.1); playerIdleLeft:flipH()
+
   local entity = scene:new_entity({
     dies_when_off_stage = true,
     position = {
@@ -102,17 +102,24 @@ function spawn_player(scene, x, y, controls)
       jump_timer = 0,
       key = controls.jump
     },
-    player = {
-      sprite = playerSprite,
+    animation = {
+      current = playerIdleRight,
+      sprite = playerSprite
     },
-    animation = playerIdleRight
+    animated_movement = {
+      walk_right = playerWalkRight,
+      walk_left = playerWalkLeft,
+      air_right = playerJumpRight,
+      air_left = playerJumpLeft,
+      idle_right = playerIdleRight,
+      idle_left = playerIdleLeft
+    }
   })
 
   world:add(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
 end
 
 function check_collisions(entity, dx, dy)
-  local player = entity.player
   local size = entity.size
   local position = entity.position
   local velocity = entity.velocity
@@ -132,9 +139,8 @@ function check_collisions(entity, dx, dy)
 end
 
 function render_player(scene)
-  for entity in pairs(scene:entities_with('player', 'animation', 'position')) do
-    local player = entity.player
-    entity.animation:draw(player.sprite, entity.position.x - playerCollideBoxL, entity.position.y - playerCollideBoxY)
+  for entity in pairs(scene:entities_with('animation', 'position')) do
+    entity.animation.current:draw(entity.animation.sprite, entity.position.x - playerCollideBoxL, entity.position.y - playerCollideBoxY)
   end
 end
 
@@ -179,7 +185,7 @@ end
 
 function update_animations(scene, dt)
   for entity in pairs(scene:entities_with('animation')) do
-    entity.animation:update(dt)
+    entity.animation.current:update(dt)
   end
 end
 
@@ -222,25 +228,27 @@ function update_left_right(scene, dt)
   end
 end
 
-function select_animation(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'position', 'velocity', 'left_right', 'jump', 'direction')) do
+function select_movement_animation(scene, dt)
+  for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'animated_movement')) do
     if entity.velocity.x < 0 then
-      if entity.jump.jumping then
-        entity.animation = playerIdleLeft
+      if entity.on_ground then
+        entity.animation.current = entity.animated_movement.walk_left
       else
-        entity.animation = playerWalkLeft
+        entity.animation.current = entity.animated_movement.air_left
       end
     elseif entity.velocity.x > 0 then
-      if entity.jump.jumping then
-        entity.animation = playerIdleRight
+      if entity.on_ground then
+        entity.animation.current = entity.animated_movement.walk_right
       else
-        entity.animation = playerWalkRight
+        entity.animation.current = entity.animated_movement.air_right
       end
     else
       if entity.direction > 0 then
-        entity.animation = playerIdleRight
+        print('idle right')
+        entity.animation.current = entity.animated_movement.idle_right
       else
-        entity.animation = playerIdleLeft
+        print('idle left')
+        entity.animation.current = entity.animated_movement.idle_left
       end
     end
   end
@@ -263,7 +271,7 @@ function love.load()
 
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)
-  scene:add_update_system(select_animation)
+  scene:add_update_system(select_movement_animation)
   scene:add_update_system(update_gravity)
   scene:add_update_system(update_position)
   scene:add_update_system(die_when_off_stage)

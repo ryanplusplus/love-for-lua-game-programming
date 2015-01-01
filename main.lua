@@ -16,8 +16,6 @@ local tile_height = 16
 
 local map
 
-local blocks = {}
-
 function update_jump(scene, dt)
   for entity in pairs(scene:entities_with('animation', 'position', 'size', 'jump')) do
     if entity.on_ground then
@@ -163,7 +161,6 @@ function find_solid_tiles(map)
             height = tile_height
           }
         }
-        blocks[block] = true
         world:add(block, block.position.x, block.position.y, block.size.width, block.size.height)
       end
     end

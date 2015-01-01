@@ -14,10 +14,6 @@ local gravity = 900
 local tile_width = 16
 local tile_height = 16
 
-local playerCollideBoxL = 8
-local playerCollideBoxR = 8
-local playerCollideBoxY = 4
-
 local map
 
 local blocks = {}
@@ -54,9 +50,6 @@ function update_gravity(scene, dt)
 end
 
 function spawn_player(scene, x, y, controls)
-  local width = 32 - playerCollideBoxL - playerCollideBoxR
-  local height = 32 - playerCollideBoxY
-
   local sprite = love.graphics.newImage('res/sprite.png')
 
   local a8 = anim8.newGrid(32, 32, sprite:getWidth(), sprite:getHeight())
@@ -71,11 +64,7 @@ function spawn_player(scene, x, y, controls)
     dies_when_off_stage = true,
     position = {
       x = x,
-      y = y + playerCollideBoxY
-    },
-    size = {
-      width = width,
-      height = height
+      y = y
     },
     velocity = {
       x = 0,
@@ -101,9 +90,17 @@ function spawn_player(scene, x, y, controls)
       jump_timer = 0,
       key = controls.jump
     },
+    size = {
+      width = 16,
+      height = 28
+    },
     animation = {
       current = idle_right,
-      sprite = sprite
+      sprite = sprite,
+      offset = {
+        x = -8,
+        y = -4
+      }
     },
     animated_movement = {
       walk_right = walk_right,
@@ -137,9 +134,10 @@ function check_collisions(entity, dx, dy)
   return dx, dy
 end
 
-function render_player(scene)
+function render_animation(scene)
   for entity in pairs(scene:entities_with('animation', 'position')) do
-    entity.animation.current:draw(entity.animation.sprite, entity.position.x - playerCollideBoxL, entity.position.y - playerCollideBoxY)
+    local animation = entity.animation
+    animation.current:draw(animation.sprite, entity.position.x + animation.offset.x, entity.position.y + animation.offset.y)
   end
 end
 
@@ -189,7 +187,7 @@ function update_animations(scene, dt)
 end
 
 function update_position(scene, dt)
-  for entity in pairs(scene:entities_with('velocity', 'position')) do
+  for entity in pairs(scene:entities_with('velocity', 'position', 'size')) do
     local dy = entity.velocity.y * dt
     local dx = entity.velocity.x * dt
 
@@ -264,7 +262,7 @@ function love.load()
 
   scene:add_render_system(render_background)
   scene:add_render_system(render_map)
-  scene:add_render_system(render_player)
+  scene:add_render_system(render_animation)
 
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)

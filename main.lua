@@ -2,6 +2,7 @@ local bump = require 'lib/bump/bump'
 local loader = require 'lib/advanced-tiled-loader/Loader'
 local anim8 = require 'lib/anim8/anim8'
 local Scene = require 'scene'
+local Animation = require 'Animation'
 
 local scene
 
@@ -48,9 +49,9 @@ function update_gravity(scene, dt)
 end
 
 function spawn_player(scene, x, y, controls)
-  local sprite = love.graphics.newImage('res/sprite.png')
+  local sprites = love.graphics.newImage('res/sprite.png')
 
-  local a8 = anim8.newGrid(32, 32, sprite:getWidth(), sprite:getHeight())
+  local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
   local walk_right = anim8.newAnimation(a8('1-8', 1), 0.1)
   local walk_left = anim8.newAnimation(a8('8-1', 1), 0.1); walk_left:flipH()
   local jump_right = anim8.newAnimation(a8(4, 1), 0.1)
@@ -92,21 +93,29 @@ function spawn_player(scene, x, y, controls)
       width = 16,
       height = 28
     },
-    animation = {
-      current = idle_right,
-      sprite = sprite,
-      offset = {
+    animation = Animation(
+      sprites,
+      {
         x = -8,
         y = -4
-      }
-    },
-    animated_movement = {
-      walk_right = walk_right,
-      walk_left = walk_left,
-      air_right = jump_right,
-      air_left = jump_left,
-      idle_right = idle_right,
-      idle_left = idle_left
+      },
+      {
+        walk_right = walk_right,
+        walk_left = walk_left,
+        air_right = jump_right,
+        air_left = jump_left,
+        idle_right = idle_right,
+        idle_left = idle_left
+      },
+      'idle_right'
+    ),
+    movement_animations = {
+      walk_right = 'walk_right',
+      walk_left = 'walk_left',
+      air_right = 'air_right',
+      air_left = 'air_left',
+      idle_right = 'idle_right',
+      idle_left = 'idle_left'
     }
   })
 
@@ -134,8 +143,7 @@ end
 
 function render_animation(scene)
   for entity in pairs(scene:entities_with('animation', 'position')) do
-    local animation = entity.animation
-    animation.current:draw(animation.sprite, entity.position.x + animation.offset.x, entity.position.y + animation.offset.y)
+    entity.animation:render(entity.position.x, entity.position.y)
   end
 end
 
@@ -179,7 +187,7 @@ end
 
 function update_animations(scene, dt)
   for entity in pairs(scene:entities_with('animation')) do
-    entity.animation.current:update(dt)
+    entity.animation:update(dt)
   end
 end
 
@@ -223,24 +231,24 @@ function update_left_right(scene, dt)
 end
 
 function select_movement_animation(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'animated_movement')) do
+  for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'movement_animations')) do
     if entity.velocity.x < 0 then
       if entity.on_ground then
-        entity.animation.current = entity.animated_movement.walk_left
+        entity.animation:select(entity.movement_animations.walk_left)
       else
-        entity.animation.current = entity.animated_movement.air_left
+        entity.animation:select(entity.movement_animations.air_left)
       end
     elseif entity.velocity.x > 0 then
       if entity.on_ground then
-        entity.animation.current = entity.animated_movement.walk_right
+        entity.animation:select(entity.movement_animations.walk_right)
       else
-        entity.animation.current = entity.animated_movement.air_right
+        entity.animation:select(entity.movement_animations.air_right)
       end
     else
       if entity.direction > 0 then
-        entity.animation.current = entity.animated_movement.idle_right
+        entity.animation:select(entity.movement_animations.idle_right)
       else
-        entity.animation.current = entity.animated_movement.idle_left
+        entity.animation:select(entity.movement_animations.idle_left)
       end
     end
   end

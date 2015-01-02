@@ -73,8 +73,7 @@ function spawn_player(scene, x, y, controls)
       x = 0,
       y = 0
     },
-    name = 'player',
-    direction = 1,
+    direction = 'right',
     left_right = {
       left_key = controls.left,
       right_key = controls.right,
@@ -210,7 +209,7 @@ function die_when_off_stage(scene, dt)
     if entity.position.y > map.height * tile_height then
       entity.position.x = 20
       entity.position.y = 10
-      entity.direction = 1
+      entity.direction = 'right'
       entity.velocity.y = 0
     end
   end
@@ -220,10 +219,10 @@ function update_left_right(scene, dt)
   for entity in pairs(scene:entities_with('animation', 'position', 'left_right', 'jump', 'direction')) do
     if love.keyboard.isDown(entity.left_right.left_key) then
       entity.velocity.x = -entity.left_right.speed
-      entity.direction = -1
+      entity.direction = 'left'
     elseif love.keyboard.isDown(entity.left_right.right_key) then
       entity.velocity.x = entity.left_right.speed
-      entity.direction = 1
+      entity.direction = 'right'
     else
       entity.velocity.x = 0
     end
@@ -245,7 +244,7 @@ function select_movement_animation(scene, dt)
         entity.animation:select(entity.movement_animations.air_right)
       end
     else
-      if entity.direction > 0 then
+      if entity.direction == 'right' then
         entity.animation:select(entity.movement_animations.idle_right)
       else
         entity.animation:select(entity.movement_animations.idle_left)

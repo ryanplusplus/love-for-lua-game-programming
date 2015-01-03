@@ -1,12 +1,11 @@
-local bump = require 'lib/bump/bump'
-local anim8 = require 'lib/anim8/anim8'
+local World = (require 'lib/bump/bump').newWorld
 local Scene = require 'scene'
-local Animation = require 'Animation'
 local Map = require 'Map'
+local Player = require 'Player'
 
 local scene
 
-local world = bump.newWorld()
+local world = World()
 
 local key_pressed = {}
 
@@ -43,85 +42,12 @@ function update_gravity(scene, dt)
   end
 end
 
-function spawn_player(scene, x, y, controls)
-  local sprites = love.graphics.newImage('res/sprite.png')
-
-  local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
-  local walk_right = anim8.newAnimation(a8('1-8', 1), 0.1)
-  local walk_left = anim8.newAnimation(a8('8-1', 1), 0.1); walk_left:flipH()
-  local jump_right = anim8.newAnimation(a8(4, 1), 0.1)
-  local jump_left = anim8.newAnimation(a8(4, 1), 0.1); jump_left:flipH()
-  local idle_right = anim8.newAnimation(a8(1, 1), 0.1)
-  local idle_left = anim8.newAnimation(a8(1, 1), 0.1); idle_left:flipH()
-
-  local entity = scene:new_entity({
-    dies_when_off_stage = true,
-    position = {
-      x = x,
-      y = y
-    },
-    velocity = {
-      x = 0,
-      y = 0
-    },
-    acceleration = {
-      x = 0,
-      y = 0
-    },
-    direction = 'right',
-    left_right = {
-      left_key = controls.left,
-      right_key = controls.right,
-      speed = 100
-    },
-    has_mass = true,
-    on_ground = true,
-    jump = {
-      jumping = false,
-      jump_rel = false,
-      jump_acceleration = -350,
-      jump_timer = 0,
-      key = controls.jump
-    },
-    size = {
-      width = 16,
-      height = 28
-    },
-    animation = Animation(
-      sprites,
-      {
-        x = -8,
-        y = -4
-      },
-      {
-        walk_right = walk_right,
-        walk_left = walk_left,
-        air_right = jump_right,
-        air_left = jump_left,
-        idle_right = idle_right,
-        idle_left = idle_left
-      },
-      'idle_right'
-    ),
-    movement_animations = {
-      walk_right = 'walk_right',
-      walk_left = 'walk_left',
-      air_right = 'air_right',
-      air_left = 'air_left',
-      idle_right = 'idle_right',
-      idle_left = 'idle_left'
-    }
-  })
-
-  world:add(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
-end
-
 function check_collisions(entity, dx, dy)
   local size = entity.size
   local position = entity.position
   local velocity = entity.velocity
   entity.on_ground = false
-  for _, collision in pairs(world:check(entity, position.x + dx, position.y + dy) or {}) do
+  for _, collision in pairs(world:check(entity.world_handle, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
     if (position.y + size.height - 0.5) <= obj.position.y and (position.y + size.height + dy) > obj.position.y then
       entity.on_ground = true
@@ -160,7 +86,7 @@ function update_animations(scene, dt)
 end
 
 function update_position(scene, dt)
-  for entity in pairs(scene:entities_with('velocity', 'position', 'size')) do
+  for entity in pairs(scene:entities_with('world_handle', 'velocity', 'position', 'size')) do
     local dy = entity.velocity.y * dt
     local dx = entity.velocity.x * dt
 
@@ -169,7 +95,7 @@ function update_position(scene, dt)
     entity.position.y = entity.position.y + dy
     entity.position.x = entity.position.x + dx
 
-    world:move(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
+    world:move(entity.world_handle, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
   end
 end
 
@@ -259,8 +185,8 @@ function love.load()
     map = Map(world, 'res/map.tmx')
   })
 
-  spawn_player(scene, 20, 10, { left = 'left', right = 'right', jump = 'up' })
-  spawn_player(scene, 50, 10, { left = 'z', right = 'x', jump = 's' })
+  scene:new_entity(Player(world, 20, 10, { left = 'left', right = 'right', jump = 'up' }))
+  scene:new_entity(Player(world, 50, 10, { left = 'z', right = 'x', jump = 's' }))
 end
 
 function love.draw()

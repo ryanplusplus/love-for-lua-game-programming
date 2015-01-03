@@ -12,7 +12,7 @@ return function(world, x, y, controls)
   local idle_right = anim8.newAnimation(a8(1, 1), 0.1)
   local idle_left = anim8.newAnimation(a8(1, 1), 0.1); idle_left:flipH()
 
-  local entity = {
+  return {
     dies_when_off_stage = true,
     position = {
       x = x,
@@ -69,10 +69,6 @@ return function(world, x, y, controls)
       idle_right = 'idle_right',
       idle_left = 'idle_left'
     },
-    world_handle = {}
+    add_to_world = true
   }
-
-  world:add(entity.world_handle, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
-
-  return entity
 end

@@ -47,7 +47,7 @@ function check_collisions(entity, dx, dy)
   local position = entity.position
   local velocity = entity.velocity
   entity.on_ground = false
-  for _, collision in pairs(world:check(entity.world_handle, position.x + dx, position.y + dy) or {}) do
+  for _, collision in pairs(world:check(entity, position.x + dx, position.y + dy) or {}) do
     local obj = collision.other
     if (position.y + size.height - 0.5) <= obj.position.y and (position.y + size.height + dy) > obj.position.y then
       entity.on_ground = true
@@ -86,7 +86,7 @@ function update_animations(scene, dt)
 end
 
 function update_position(scene, dt)
-  for entity in pairs(scene:entities_with('world_handle', 'velocity', 'position', 'size')) do
+  for entity in pairs(scene:entities_with('velocity', 'position', 'size')) do
     local dy = entity.velocity.y * dt
     local dx = entity.velocity.x * dt
 
@@ -95,7 +95,7 @@ function update_position(scene, dt)
     entity.position.y = entity.position.y + dy
     entity.position.x = entity.position.x + dx
 
-    world:move(entity.world_handle, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
+    world:move(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
   end
 end
 
@@ -156,6 +156,13 @@ function update_movement_animation(scene, dt)
   end
 end
 
+function add_to_world(scene, dt)
+  for entity in pairs(scene:entities_with('add_to_world', 'position', 'size')) do
+    world:add(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
+    entity.add_to_world = nil
+  end
+end
+
 function reset_keys()
   key_pressed = {}
 end
@@ -171,6 +178,7 @@ function love.load()
   scene:add_render_system(render_map)
   scene:add_render_system(render_animation)
 
+  scene:add_update_system(add_to_world)
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)
   scene:add_update_system(update_movement_animation)

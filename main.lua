@@ -255,10 +255,7 @@ function love.load()
   scene:add_update_system(reset_keys)
 
   scene:new_entity({
-    background = love.graphics.newImage('res/background.png')
-  })
-
-  scene:new_entity({
+    background = love.graphics.newImage('res/background.png'),
     map = Map(world, 'res/map.tmx')
   })
 

@@ -175,8 +175,8 @@ function find_solid_tiles(map)
 end
 
 function render_background(scene)
-  for entity in pairs(scene:entities_with('background', 'drawable')) do
-    love.graphics.draw(entity.drawable)
+  for entity in pairs(scene:entities_with('background')) do
+    love.graphics.draw(entity.background)
   end
 end
 
@@ -278,8 +278,7 @@ function love.load()
   scene:add_update_system(reset_keys)
 
   scene:new_entity({
-    background = true,
-    drawable = love.graphics.newImage('res/background.png')
+    background = love.graphics.newImage('res/background.png')
   })
 
   load_tile_map('res/map.tmx')

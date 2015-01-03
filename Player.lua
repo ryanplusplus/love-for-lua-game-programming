@@ -69,6 +69,7 @@ return function(world, x, y, controls)
       idle_right = 'idle_right',
       idle_left = 'idle_left'
     },
-    add_to_world = true
+    add_to_world = true,
+    player = true
   }
 end

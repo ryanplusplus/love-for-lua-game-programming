@@ -66,20 +66,37 @@ function update_animations(scene, dt)
   end
 end
 
-function update_position(scene, dt)
-  for entity in pairs(scene:entities_with('velocity', 'position', 'size')) do
-    local collisions, collision_count
+function update_player_position(scene, dt)
+  for entity in pairs(scene:entities_with('velocity', 'position', 'size', 'player')) do
+    local collisions
+    local resolved_x, resolved_y
 
-    local dy = entity.velocity.y * dt
     local dx = entity.velocity.x * dt
+    local dy = entity.velocity.y * dt
 
-    entity.position.x, entity.position.y, collisions, collision_count = world:move(entity, entity.position.x + dx, entity.position.y + dy)
+    local target_x = entity.position.x + dx
+    local target_y = entity.position.y + dy
 
-    if collision_count > 0 then
-      entity.on_ground = true
-      entity.jump.jumping = false
-      entity.velocity.y = 0
+    _, _, collisions = world:check(entity, target_x, target_y, function() return 'cross' end)
+
+    resolved_x = target_x
+    resolved_y = target_y
+
+    entity.on_ground = false
+
+    for _, collision in pairs(collisions) do
+      if collision.normal.y == -1 and not collision.overlaps then
+        entity.on_ground = true
+        entity.jump.jumping = false
+        entity.velocity.y = 0
+        resolved_y = collision.touch.y
+      end
     end
+
+    entity.position.x = resolved_x
+    entity.position.y = resolved_y
+
+    world:update(entity, entity.position.x, entity.position.y)
   end
 end
 
@@ -167,7 +184,7 @@ function love.load()
   scene:add_update_system(update_left_right)
   scene:add_update_system(update_movement_animation)
   scene:add_update_system(update_gravity)
-  scene:add_update_system(update_position)
+  scene:add_update_system(update_player_position)
   scene:add_update_system(die_when_off_stage)
   scene:add_update_system(update_animations)
   scene:add_update_system(reset_keys)

@@ -42,25 +42,6 @@ function update_gravity(scene, dt)
   end
 end
 
-function check_collisions(entity, dx, dy)
-  local size = entity.size
-  local position = entity.position
-  local velocity = entity.velocity
-  entity.on_ground = false
-  for _, collision in pairs(world:check(entity, position.x + dx, position.y + dy) or {}) do
-    local obj = collision.other
-    if (position.y + size.height - 0.5) <= obj.position.y and (position.y + size.height + dy) > obj.position.y then
-      entity.on_ground = true
-      entity.jump.jumping = false
-      velocity.y = 0
-      dy = -(position.y + size.height - obj.position.y)
-      break
-    end
-  end
-
-  return dx, dy
-end
-
 function render_animation(scene)
   for entity in pairs(scene:entities_with('animation', 'position')) do
     entity.animation:render(entity.position.x, entity.position.y)
@@ -87,15 +68,18 @@ end
 
 function update_position(scene, dt)
   for entity in pairs(scene:entities_with('velocity', 'position', 'size')) do
+    local collisions, collision_count
+
     local dy = entity.velocity.y * dt
     local dx = entity.velocity.x * dt
 
-    dx, dy = check_collisions(entity, dx, dy)
+    entity.position.x, entity.position.y, collisions, collision_count = world:move(entity, entity.position.x + dx, entity.position.y + dy)
 
-    entity.position.y = entity.position.y + dy
-    entity.position.x = entity.position.x + dx
-
-    world:move(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
+    if collision_count > 0 then
+      entity.on_ground = true
+      entity.jump.jumping = false
+      entity.velocity.y = 0
+    end
   end
 end
 

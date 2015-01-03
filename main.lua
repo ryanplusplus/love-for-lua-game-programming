@@ -1,8 +1,8 @@
 local bump = require 'lib/bump/bump'
-local loader = require 'lib/advanced-tiled-loader/Loader'
 local anim8 = require 'lib/anim8/anim8'
 local Scene = require 'scene'
 local Animation = require 'Animation'
+local Map = require 'Map'
 
 local scene
 
@@ -11,11 +11,6 @@ local world = bump.newWorld()
 local key_pressed = {}
 
 local gravity = 900
-
-local tile_width = 16
-local tile_height = 16
-
-local map
 
 function update_jump(scene, dt)
   for entity in pairs(scene:entities_with('animation', 'position', 'size', 'jump')) do
@@ -146,34 +141,6 @@ function render_animation(scene)
   end
 end
 
-function load_tile_map(levelFile)
-  map = loader.load(levelFile)
-  find_solid_tiles(map)
-  map.drawObjects = false
-end
-
-function find_solid_tiles(map)
-  local layer = map.layers['platform']
-  for tileX = 1, map.width do
-    for tileY = 1, map.height do
-      local tile = layer(tileX - 1, tileY - 1)
-      if tile then
-        local block = {
-          position = {
-            x = (tileX - 1) * 16,
-            y = (tileY - 1) * 16
-          },
-          size = {
-            width = tile_width,
-            height = tile_height
-          }
-        }
-        world:add(block, block.position.x, block.position.y, block.size.width, block.size.height)
-      end
-    end
-  end
-end
-
 function render_background(scene)
   for entity in pairs(scene:entities_with('background')) do
     love.graphics.draw(entity.background)
@@ -181,7 +148,9 @@ function render_background(scene)
 end
 
 function render_map(scene)
-  map:draw()
+  for entity in pairs(scene:entities_with('map')) do
+    entity.map:draw()
+  end
 end
 
 function update_animations(scene, dt)
@@ -205,8 +174,16 @@ function update_position(scene, dt)
 end
 
 function die_when_off_stage(scene, dt)
+  local map_height
+  local tile_height
+
+  for entity in pairs(scene:entities_with('map')) do
+    map_height = entity.map.height
+    tile_height = entity.map.tileHeight
+  end
+
   for entity in pairs(scene:entities_with('dies_when_off_stage', 'position', 'velocity')) do
-    if entity.position.y > map.height * tile_height then
+    if entity.position.y > map_height * tile_height then
       entity.position.x = 20
       entity.position.y = 10
       entity.direction = 'right'
@@ -229,7 +206,7 @@ function update_left_right(scene, dt)
   end
 end
 
-function select_movement_animation(scene, dt)
+function update_movement_animation(scene, dt)
   for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'movement_animations')) do
     if entity.velocity.x < 0 then
       if entity.on_ground then
@@ -270,7 +247,7 @@ function love.load()
 
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)
-  scene:add_update_system(select_movement_animation)
+  scene:add_update_system(update_movement_animation)
   scene:add_update_system(update_gravity)
   scene:add_update_system(update_position)
   scene:add_update_system(die_when_off_stage)
@@ -281,7 +258,10 @@ function love.load()
     background = love.graphics.newImage('res/background.png')
   })
 
-  load_tile_map('res/map.tmx')
+  scene:new_entity({
+    map = Map(world, 'res/map.tmx')
+  })
+
   spawn_player(scene, 20, 10, { left = 'left', right = 'right', jump = 'up' })
   spawn_player(scene, 50, 10, { left = 'z', right = 'x', jump = 's' })
 end

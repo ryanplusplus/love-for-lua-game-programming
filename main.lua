@@ -11,31 +11,6 @@ local key_pressed = {}
 
 local gravity = 900
 
-function update_jump(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'position', 'size', 'jump')) do
-    if entity.on_ground then
-      if entity.jump.jump_rel then
-        entity.velocity.y = entity.jump.jump_acceleration
-        entity.jump.jumping = true
-        entity.jump.jump_rel = false
-        entity.jump.jump_timer = 0.065
-      end
-    elseif entity.jump.jump_rel == false and entity.jump.jump_timer > 0 then
-      entity.velocity.y = entity.velocity.y + entity.jump.jump_acceleration * dt
-    else
-      entity.jump.jump_rel = false
-    end
-
-    if key_pressed[entity.jump.key] then
-      entity.jump.jump_rel = true
-    end
-
-    if entity.jump.jump_timer > 0 then
-      entity.jump.jump_timer = entity.jump.jump_timer - dt
-    end
-  end
-end
-
 function update_gravity(scene, dt)
   for entity in pairs(scene:entities_with('has_mass', 'velocity')) do
     entity.velocity.y = entity.velocity.y + gravity * dt
@@ -158,7 +133,9 @@ function update_movement_animation(scene, dt)
 end
 
 function reset_keys()
-  key_pressed = {}
+  for key in pairs(key_pressed) do
+    key_pressed[key] = nil
+  end
 end
 
 function love.keypressed(k)
@@ -173,7 +150,7 @@ function love.load()
   scene:add_render_system(render_animation)
 
   scene:add_update_system((require 'update_system/AddToWorld')(world))
-  scene:add_update_system(update_jump)
+  scene:add_update_system((require 'update_system/Jump')(key_pressed))
   scene:add_update_system(update_left_right)
   scene:add_update_system(update_movement_animation)
   scene:add_update_system(update_gravity)

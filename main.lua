@@ -2,6 +2,7 @@ local World = (require 'lib/bump/bump').newWorld
 local Scene = require 'scene'
 local Map = require 'Map'
 local Player = require 'Player'
+local Background = require 'Background'
 
 local scene
 
@@ -16,21 +17,9 @@ function render_animation(scene)
   end
 end
 
-function render_background(scene)
-  for entity in pairs(scene:entities_with('background')) do
-    love.graphics.draw(entity.background)
-  end
-end
-
 function render_map(scene)
   for entity in pairs(scene:entities_with('map')) do
     entity.map:draw()
-  end
-end
-
-function reset_keys()
-  for key in pairs(key_pressed) do
-    key_pressed[key] = nil
   end
 end
 
@@ -43,10 +32,16 @@ function love.keyreleased(k)
   key_held[k] = nil
 end
 
+function reset_keys()
+  for key in pairs(key_pressed) do
+    key_pressed[key] = nil
+  end
+end
+
 function love.load()
   scene = Scene()
 
-  scene:add_render_system(render_background)
+  scene:add_render_system(require 'render_system/background')
   scene:add_render_system(render_map)
   scene:add_render_system(render_animation)
 
@@ -61,7 +56,7 @@ function love.load()
   scene:add_update_system(reset_keys)
 
   scene:new_entity({
-    background = love.graphics.newImage('res/background.png'),
+    background = Background('res/background.png'),
     map = Map(world, 'res/map.tmx')
   })
 

@@ -8,6 +8,7 @@ local scene
 local world = World()
 
 local key_pressed = {}
+local key_held = {}
 
 local gravity = 900
 
@@ -94,20 +95,6 @@ function die_when_off_stage(scene, dt)
   end
 end
 
-function update_left_right(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'position', 'left_right', 'jump', 'direction')) do
-    if love.keyboard.isDown(entity.left_right.left_key) then
-      entity.velocity.x = -entity.left_right.speed
-      entity.direction = 'left'
-    elseif love.keyboard.isDown(entity.left_right.right_key) then
-      entity.velocity.x = entity.left_right.speed
-      entity.direction = 'right'
-    else
-      entity.velocity.x = 0
-    end
-  end
-end
-
 function update_movement_animation(scene, dt)
   for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'movement_animations')) do
     if entity.velocity.x < 0 then
@@ -140,6 +127,11 @@ end
 
 function love.keypressed(k)
   key_pressed[k] = true
+  key_held[k] = true
+end
+
+function love.keyreleased(k)
+  key_held[k] = nil
 end
 
 function love.load()
@@ -151,7 +143,7 @@ function love.load()
 
   scene:add_update_system((require 'update_system/AddToWorld')(world))
   scene:add_update_system((require 'update_system/Jump')(key_pressed))
-  scene:add_update_system(update_left_right)
+  scene:add_update_system((require 'update_system/LeftRight')(key_held))
   scene:add_update_system(update_movement_animation)
   scene:add_update_system(update_gravity)
   scene:add_update_system(update_player_position)

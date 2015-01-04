@@ -157,13 +157,6 @@ function update_movement_animation(scene, dt)
   end
 end
 
-function add_to_world(scene, dt)
-  for entity in pairs(scene:entities_with('add_to_world', 'position', 'size')) do
-    world:add(entity, entity.position.x, entity.position.y, entity.size.width, entity.size.height)
-    entity.add_to_world = nil
-  end
-end
-
 function reset_keys()
   key_pressed = {}
 end
@@ -179,7 +172,7 @@ function love.load()
   scene:add_render_system(render_map)
   scene:add_render_system(render_animation)
 
-  scene:add_update_system(add_to_world)
+  scene:add_update_system((require 'update_system/AddToWorld')(world))
   scene:add_update_system(update_jump)
   scene:add_update_system(update_left_right)
   scene:add_update_system(update_movement_animation)

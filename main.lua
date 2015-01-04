@@ -95,30 +95,6 @@ function die_when_off_stage(scene, dt)
   end
 end
 
-function update_movement_animation(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'movement_animations')) do
-    if entity.velocity.x < 0 then
-      if entity.on_ground then
-        entity.animation:select(entity.movement_animations.walk_left)
-      else
-        entity.animation:select(entity.movement_animations.air_left)
-      end
-    elseif entity.velocity.x > 0 then
-      if entity.on_ground then
-        entity.animation:select(entity.movement_animations.walk_right)
-      else
-        entity.animation:select(entity.movement_animations.air_right)
-      end
-    else
-      if entity.direction == 'right' then
-        entity.animation:select(entity.movement_animations.idle_right)
-      else
-        entity.animation:select(entity.movement_animations.idle_left)
-      end
-    end
-  end
-end
-
 function reset_keys()
   for key in pairs(key_pressed) do
     key_pressed[key] = nil
@@ -144,7 +120,7 @@ function love.load()
   scene:add_update_system((require 'update_system/AddToWorld')(world))
   scene:add_update_system((require 'update_system/Jump')(key_pressed))
   scene:add_update_system((require 'update_system/LeftRight')(key_held))
-  scene:add_update_system(update_movement_animation)
+  scene:add_update_system(require 'update_system/movement_animation')
   scene:add_update_system(update_gravity)
   scene:add_update_system(update_player_position)
   scene:add_update_system(die_when_off_stage)

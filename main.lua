@@ -6,20 +6,12 @@ local Background = require 'Background'
 
 local scene
 
-local world = World()
-
 local key_pressed = {}
 local key_held = {}
 
 function render_animation(scene)
   for entity in pairs(scene:entities_with('animation', 'position')) do
     entity.animation:render(entity.position.x, entity.position.y)
-  end
-end
-
-function render_map(scene)
-  for entity in pairs(scene:entities_with('map')) do
-    entity.map:draw()
   end
 end
 
@@ -39,10 +31,12 @@ function reset_keys()
 end
 
 function love.load()
+  local world = World()
+
   scene = Scene()
 
-  scene:add_render_system(require 'render_system/background')
-  scene:add_render_system(render_map)
+  scene:add_render_system((require 'render_system/Drawable')('background'))
+  scene:add_render_system((require 'render_system/Drawable')('map'))
   scene:add_render_system(render_animation)
 
   scene:add_update_system((require 'update_system/AddToWorld')(world))

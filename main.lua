@@ -10,14 +10,6 @@ local world = World()
 local key_pressed = {}
 local key_held = {}
 
-local gravity = 900
-
-function update_gravity(scene, dt)
-  for entity in pairs(scene:entities_with('has_mass', 'velocity')) do
-    entity.velocity.y = entity.velocity.y + gravity * dt
-  end
-end
-
 function render_animation(scene)
   for entity in pairs(scene:entities_with('animation', 'position')) do
     entity.animation:render(entity.position.x, entity.position.y)
@@ -121,7 +113,7 @@ function love.load()
   scene:add_update_system((require 'update_system/Jump')(key_pressed))
   scene:add_update_system((require 'update_system/LeftRight')(key_held))
   scene:add_update_system(require 'update_system/movement_animation')
-  scene:add_update_system(update_gravity)
+  scene:add_update_system((require 'update_system/Gravity')(900))
   scene:add_update_system(update_player_position)
   scene:add_update_system(die_when_off_stage)
   scene:add_update_system(update_animations)

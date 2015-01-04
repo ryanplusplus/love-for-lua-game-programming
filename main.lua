@@ -34,25 +34,6 @@ function update_animations(scene, dt)
   end
 end
 
-function die_when_off_stage(scene, dt)
-  local map_height
-  local tile_height
-
-  for entity in pairs(scene:entities_with('map')) do
-    map_height = entity.map.height
-    tile_height = entity.map.tileHeight
-  end
-
-  for entity in pairs(scene:entities_with('dies_when_off_stage', 'position', 'velocity')) do
-    if entity.position.y > map_height * tile_height then
-      entity.position.x = 20
-      entity.position.y = 10
-      entity.direction = 'right'
-      entity.velocity.y = 0
-    end
-  end
-end
-
 function reset_keys()
   for key in pairs(key_pressed) do
     key_pressed[key] = nil
@@ -81,7 +62,7 @@ function love.load()
   scene:add_update_system(require 'update_system/movement_animation')
   scene:add_update_system((require 'update_system/Gravity')(900))
   scene:add_update_system((require 'update_system/PlayerPosition')(world))
-  scene:add_update_system(die_when_off_stage)
+  scene:add_update_system(require 'update_system/die_when_off_stage')
   scene:add_update_system(update_animations)
   scene:add_update_system(reset_keys)
 

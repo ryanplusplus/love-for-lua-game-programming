@@ -28,12 +28,6 @@ function render_map(scene)
   end
 end
 
-function update_animations(scene, dt)
-  for entity in pairs(scene:entities_with('animation')) do
-    entity.animation:update(dt)
-  end
-end
-
 function reset_keys()
   for key in pairs(key_pressed) do
     key_pressed[key] = nil
@@ -63,7 +57,7 @@ function love.load()
   scene:add_update_system((require 'update_system/Gravity')(900))
   scene:add_update_system((require 'update_system/PlayerPosition')(world))
   scene:add_update_system(require 'update_system/die_when_off_stage')
-  scene:add_update_system(update_animations)
+  scene:add_update_system(require 'update_system/animation')
   scene:add_update_system(reset_keys)
 
   scene:new_entity({

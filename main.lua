@@ -9,12 +9,6 @@ local scene
 local key_pressed = {}
 local key_held = {}
 
-function render_animation(scene)
-  for entity in pairs(scene:entities_with('animation', 'position')) do
-    entity.animation:render(entity.position.x, entity.position.y)
-  end
-end
-
 function love.keypressed(k)
   key_pressed[k] = true
   key_held[k] = true
@@ -37,7 +31,7 @@ function love.load()
 
   scene:add_render_system((require 'render_system/Drawable')('background'))
   scene:add_render_system((require 'render_system/Drawable')('map'))
-  scene:add_render_system(render_animation)
+  scene:add_render_system(require 'render_system/animation')
 
   scene:add_update_system((require 'update_system/AddToWorld')(world))
   scene:add_update_system((require 'update_system/Jump')(key_pressed))

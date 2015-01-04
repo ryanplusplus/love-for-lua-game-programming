@@ -34,40 +34,6 @@ function update_animations(scene, dt)
   end
 end
 
-function update_player_position(scene, dt)
-  for entity in pairs(scene:entities_with('velocity', 'position', 'size', 'player')) do
-    local collisions
-    local resolved_x, resolved_y
-
-    local dx = entity.velocity.x * dt
-    local dy = entity.velocity.y * dt
-
-    local target_x = entity.position.x + dx
-    local target_y = entity.position.y + dy
-
-    _, _, collisions = world:check(entity, target_x, target_y, function() return 'cross' end)
-
-    resolved_x = target_x
-    resolved_y = target_y
-
-    entity.on_ground = false
-
-    for _, collision in pairs(collisions) do
-      if collision.normal.y == -1 and not collision.overlaps then
-        entity.on_ground = true
-        entity.jump.jumping = false
-        entity.velocity.y = 0
-        resolved_y = collision.touch.y
-      end
-    end
-
-    entity.position.x = resolved_x
-    entity.position.y = resolved_y
-
-    world:update(entity, entity.position.x, entity.position.y)
-  end
-end
-
 function die_when_off_stage(scene, dt)
   local map_height
   local tile_height
@@ -114,7 +80,7 @@ function love.load()
   scene:add_update_system((require 'update_system/LeftRight')(key_held))
   scene:add_update_system(require 'update_system/movement_animation')
   scene:add_update_system((require 'update_system/Gravity')(900))
-  scene:add_update_system(update_player_position)
+  scene:add_update_system((require 'update_system/PlayerPosition')(world))
   scene:add_update_system(die_when_off_stage)
   scene:add_update_system(update_animations)
   scene:add_update_system(reset_keys)

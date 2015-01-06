@@ -41,6 +41,7 @@ function love.load()
   scene:add_update_system((require 'update_system/PlayerPosition')(world))
   scene:add_update_system(require 'update_system/die_when_off_stage')
   scene:add_update_system(require 'update_system/animation')
+  scene:add_update_system(require 'update_system/respawn')
   scene:add_update_system(reset_keys)
 
   scene:new_entity({

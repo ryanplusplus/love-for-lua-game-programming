@@ -1,5 +1,5 @@
 local World = (require 'lib/bump/bump').newWorld
-local Scene = require 'scene'
+local Scene = require 'Scene'
 local Map = require 'Map'
 local Player = require 'Player'
 local Background = require 'Background'

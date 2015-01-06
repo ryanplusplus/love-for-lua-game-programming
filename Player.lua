@@ -72,15 +72,10 @@ return function(world, x, y, controls)
     add_to_world = true,
     player = true,
     respawn = {
-      position = {
-        x = 20,
-        y = 10
-      },
-      direction = 'right',
-      velocity = {
-        x = 0,
-        y = 0
-      }
+      [{ 'position', 'x' }] = 20,
+      [{ 'position', 'y' }] = 10,
+      [{ 'direction' }] = 'right',
+      [{ 'velocity', 'y' }] = 0
     }
   }
 end

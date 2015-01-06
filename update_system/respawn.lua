@@ -1,22 +1,20 @@
-function shallow_copy(original)
-  local copy
-  if type(original) == 'table' then
-    copy = {}
-    for k, v in pairs(original) do
-      copy[k] = v
-    end
-  else
-    copy = original
-  end
-  return copy
-end
-
 return function(scene, dt)
   for entity in pairs(scene:entities_with('dead', 'respawn')) do
     entity.dead = nil
 
-    for component, value in pairs(entity.respawn) do
-      entity[component] = shallow_copy(value)
-    end
+    entity.position.x = 20
+    entity.position.y = 10
+    entity.direction = 'right'
+    entity.velocity.y = 0
+
+    -- for path, value in pairs(entity.respawn) do
+    --   local thing = entity
+
+    --   for i = 1, #path - 1 do
+    --     thing = thing[path[i]]
+    --   end
+
+    --   thing[path[#path]] = value
+    -- end
   end
 end

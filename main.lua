@@ -1,5 +1,5 @@
 local World = (require 'lib/bump/bump').newWorld
-local Scene = require 'scene'
+local Scene = require 'Scene'
 local Map = require 'Map'
 local Player = require 'Player'
 local Background = require 'Background'
@@ -40,6 +40,7 @@ function love.load()
   scene:add_update_system((require 'update_system/Gravity')(900))
   scene:add_update_system((require 'update_system/PlayerPosition')(world))
   scene:add_update_system(require 'update_system/die_when_off_stage')
+  scene:add_update_system(require 'update_system/respawn')
   scene:add_update_system(require 'update_system/animation')
   scene:add_update_system(reset_keys)
 

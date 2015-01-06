@@ -5,12 +5,12 @@ return function(world, x, y, controls)
   local sprites = love.graphics.newImage('res/sprite.png')
 
   local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
-  local walk_right = anim8.newAnimation(a8('1-8', 1), 0.1)
-  local walk_left = anim8.newAnimation(a8('8-1', 1), 0.1); walk_left:flipH()
-  local jump_right = anim8.newAnimation(a8(4, 1), 0.1)
-  local jump_left = anim8.newAnimation(a8(4, 1), 0.1); jump_left:flipH()
-  local idle_right = anim8.newAnimation(a8(1, 1), 0.1)
-  local idle_left = anim8.newAnimation(a8(1, 1), 0.1); idle_left:flipH()
+  local walk_right = anim8.newAnimation(a8('1-8', 1), 0.05)
+  local walk_left = anim8.newAnimation(a8('8-1', 1), 0.05); walk_left:flipH()
+  local jump_right = anim8.newAnimation(a8(4, 1), 0.05)
+  local jump_left = anim8.newAnimation(a8(4, 1), 0.05); jump_left:flipH()
+  local idle_right = anim8.newAnimation(a8(1, 1), 0.05)
+  local idle_left = anim8.newAnimation(a8(1, 1), 0.05); idle_left:flipH()
 
   return {
     dies_when_off_stage = true,
@@ -66,6 +66,12 @@ return function(world, x, y, controls)
       idle_left = 'idle_left'
     },
     add_to_world = true,
-    player = true
+    player = true,
+    respawn = {
+      [{ 'position', 'x' }] = 20,
+      [{ 'position', 'y' }] = 10,
+      [{ 'direction' }] = 'right',
+      [{ 'velocity', 'y' }] = 0
+    }
   }
 end

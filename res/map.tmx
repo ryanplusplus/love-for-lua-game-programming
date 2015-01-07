@@ -3,9 +3,6 @@
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="tiles.png" trans="ff00ff" width="320" height="200"/>
  </tileset>
- <tileset firstgid="241" name="player" tilewidth="32" tileheight="32">
-  <image source="sprite.png" trans="ff00ff" width="256" height="32"/>
- </tileset>
  <layer name="shadow" width="40" height="30">
   <data encoding="base64" compression="zlib">
    eJztl1EKwzAIhnO5rr1Ctl2gT939n4YwQeQ3MZnmYewHoaOt+WY02rOUcgLTat233okQYkNr1cYzlo8IZvazO/wixp7dg/i0XR+7TTC+PjbLtnX45D20RhUM0fHaDCa9v961ZDwz2IrB+xzwW4PYUIwQH++bzr0sWXvaqreImHjZOG4yfiiWK2PGbHLtw2CKrL9f1Mp+OSKZY1Kt+l0lWRdaKO8oN1flHrHpPon4+Jr+x8h5/C0b2dXhk9er6pbZWj2ftCu+LDaOExupNUciZbJZ56pkRFpVq63c8dRHFCPHysuGGLP45D4i/71+ToxHEp+e2ZB/74xb1fs8K5BmZ5boPGFGNGPNMGb0Rev7a+acyToDNKOXbVO/5fdb9DnKjCN+H4afrN5d+4/81dEbdtJ+BQ==

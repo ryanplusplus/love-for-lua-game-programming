@@ -2,7 +2,7 @@ local anim8 = require 'lib/anim8/anim8'
 local Animation = require 'Animation'
 
 return function(world, x, y, controls)
-  local sprites = love.graphics.newImage('res/sprite.png')
+  local sprites = love.graphics.newImage('res/player.png')
 
   local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
   local walk_right = anim8.newAnimation(a8('1-8', 1), 0.05)

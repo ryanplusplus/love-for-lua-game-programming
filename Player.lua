@@ -6,7 +6,7 @@ return function(world, x, y, controls)
 
   local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
   local walk_right = anim8.newAnimation(a8('1-8', 1), 0.05)
-  local walk_left = anim8.newAnimation(a8('8-1', 1), 0.05); walk_left:flipH()
+  local walk_left = anim8.newAnimation(a8('1-8', 1), 0.05); walk_left:flipH()
   local jump_right = anim8.newAnimation(a8(4, 1), 0.05)
   local jump_left = anim8.newAnimation(a8(4, 1), 0.05); jump_left:flipH()
   local idle_right = anim8.newAnimation(a8(1, 1), 0.05)

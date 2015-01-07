@@ -11,6 +11,7 @@ return function(key_pressed)
       elseif entity.jump.jump_rel == false and entity.jump.jump_timer > 0 then
         entity.velocity.y = entity.velocity.y + entity.jump.jump_acceleration * dt
       else
+        entity.jump.jumping = false
         entity.jump.jump_rel = false
       end
 

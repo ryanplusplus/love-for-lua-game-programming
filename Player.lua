@@ -39,13 +39,13 @@ return function(world, x, y, controls)
     },
     size = {
       width = 16,
-      height = 28
+      height = 26
     },
     animation = Animation(
       sprites,
       {
         x = -8,
-        y = -4
+        y = -6
       },
       {
         walk_right = walk_right,

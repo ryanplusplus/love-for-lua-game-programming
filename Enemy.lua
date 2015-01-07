@@ -26,13 +26,13 @@ return function(world, x, y)
     on_ground = true,
     size = {
       width = 18,
-      height = 32
+      height = 26
     },
     animation = Animation(
       sprites,
       {
         x = -8,
-        y = 0
+        y = -6
       },
       {
         walk_right = walk_right,

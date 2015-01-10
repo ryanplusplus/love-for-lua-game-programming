@@ -13,7 +13,7 @@ return function(scene, dt)
         entity.animation:select(entity.movement_animations.air_right)
       end
     else
-      if entity.direction == 'right' then
+      if entity.direction == 1 then
         entity.animation:select(entity.movement_animations.idle_right)
       else
         entity.animation:select(entity.movement_animations.idle_left)

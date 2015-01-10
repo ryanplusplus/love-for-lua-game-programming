@@ -20,7 +20,8 @@ function add_platform_tiles_to_world(map, world)
           size = {
             width = tile.width,
             height = tile.height
-          }
+          },
+          platform = true
         }
 
         world:add(block, block.position.x, block.position.y, block.size.width, block.size.height)

@@ -21,9 +21,9 @@ return function(world, x, y)
       x = 0,
       y = 0
     },
-    direction = 'right',
+    direction = -1,
     has_mass = true,
-    on_ground = true,
+    on_ground = false,
     size = {
       width = 18,
       height = 26
@@ -55,8 +55,7 @@ return function(world, x, y)
     add_to_world = true,
     enemy = true,
     basic_enemy_ai = {
-      speed = -100,
-      direction = 'left'
+      speed = 100
     },
     dies_when_off_stage = true
   }

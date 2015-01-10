@@ -22,7 +22,7 @@ return function(world, x, y, controls)
       x = 0,
       y = 0
     },
-    direction = 'right',
+    direction = 1,
     left_right = {
       left_key = controls.left,
       right_key = controls.right,

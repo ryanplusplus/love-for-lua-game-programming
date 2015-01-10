@@ -53,6 +53,10 @@ return function(world, x, y)
       idle_left = 'idle_left'
     },
     add_to_world = true,
-    enemy = true
+    enemy = true,
+    basic_enemy_ai = {
+      speed = -100,
+      direction = 'left'
+    }
   }
 end

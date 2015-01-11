@@ -1,7 +1,7 @@
 return function(world)
   return function(scene, dt)
-    for entity in pairs(scene:entities_with('velocity', 'position', 'size', 'player')) do
-      local collisions
+    for entity in pairs(scene:entities_with('velocity', 'position', 'size', 'player', 'jump')) do
+      local collisions, collision_x, collision_y
       local resolved_x, resolved_y
 
       local dx = entity.velocity.x * dt
@@ -10,7 +10,10 @@ return function(world)
       local target_x = entity.position.x + dx
       local target_y = entity.position.y + dy
 
-      _, _, collisions = world:check(entity, target_x, target_y, function() return 'cross' end)
+      collision_x, collision_y, collisions = world:check(entity, target_x, target_y, function(_, other)
+        if other.enemy then return 'bounce' end
+        if other.platform then return 'cross' end
+      end)
 
       resolved_x = target_x
       resolved_y = target_y
@@ -19,9 +22,18 @@ return function(world)
 
       for _, collision in pairs(collisions) do
         if collision.normal.y == -1 and not collision.overlaps then
-          entity.on_ground = true
-          entity.velocity.y = 0
-          resolved_y = collision.touch.y
+          if collision.other.platform then
+            entity.on_ground = true
+            entity.velocity.y = 0
+            resolved_y = collision.touch.y
+          else
+            resolved_x = collision_x
+            resolved_y = collision_y
+            entity.velocity.y = math.max(-entity.velocity.y, entity.jump.jump_acceleration)
+            collision.other.dead = true
+          end
+        elseif collision.other.enemy then
+          entity.dead = true
         end
       end
 

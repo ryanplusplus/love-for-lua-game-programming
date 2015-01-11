@@ -44,7 +44,7 @@ function love.load()
   scene:add_update_system((require 'update/EnemyPosition')(world))
   scene:add_update_system(require 'update/die_when_off_stage')
   scene:add_update_system(require 'update/respawn')
-  scene:add_update_system(require 'update/remove_dead')
+  scene:add_update_system((require 'update/remove_dead')(world))
   scene:add_update_system(require 'update/animation')
   scene:add_update_system(reset_keys)
 

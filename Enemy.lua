@@ -58,6 +58,6 @@ return function(world, x, y)
       speed = 100
     },
     remove_from_world_when_dead = true,
-    bounciness = 0.75
+    bounciness = 0.9
   }
 end

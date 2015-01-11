@@ -57,6 +57,7 @@ return function(world, x, y)
     basic_enemy_ai = {
       speed = 100
     },
-    remove_from_world_when_dead = true
+    remove_from_world_when_dead = true,
+    bounciness = 0.75
   }
 end

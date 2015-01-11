@@ -32,9 +32,7 @@ return function(world, x, y, controls)
     on_ground = true,
     jump = {
       jumping = false,
-      jump_rel = false,
-      jump_acceleration = -350,
-      jump_timer = 0,
+      speed = 350,
       key = controls.jump
     },
     size = {

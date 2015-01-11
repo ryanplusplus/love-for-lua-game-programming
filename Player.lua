@@ -72,6 +72,7 @@ return function(world, x, y, controls)
       [{ 'position', 'y' }] = 10,
       [{ 'direction' }] = 'right',
       [{ 'velocity', 'y' }] = 0
-    }
+    },
+    lives = 3
   }
 end

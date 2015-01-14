@@ -1,7 +1,7 @@
 local anim8 = require 'lib/anim8/anim8'
 local Animation = require 'Animation'
 
-return function(world, x, y, controls)
+return function(world, x, y, name, controls)
   local sprites = love.graphics.newImage('res/player.png')
 
   local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
@@ -71,6 +71,7 @@ return function(world, x, y, controls)
       [{ 'direction' }] = 'right',
       [{ 'velocity', 'y' }] = 0
     },
-    lives = 3
+    lives = 3,
+    name = name
   }
 end

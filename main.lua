@@ -4,6 +4,7 @@ local Map = require 'Map'
 local Player = require 'Player'
 local Enemy = require 'Enemy'
 local Background = require 'Background'
+local Hud = require 'Hud'
 
 local scene
 
@@ -33,6 +34,7 @@ function love.load()
   scene:add_render_system((require 'render/Drawable')('background'))
   scene:add_render_system((require 'render/Drawable')('map'))
   scene:add_render_system(require 'render/animation')
+  scene:add_render_system(require 'render/hud')
 
   scene:add_update_system((require 'update/AddToWorld')(world))
   scene:add_update_system((require 'update/Jump')(key_pressed))
@@ -53,8 +55,10 @@ function love.load()
     map = Map(world, 'res/map.tmx')
   })
 
-  scene:new_entity(Player(world, 20, 10, { left = 'left', right = 'right', jump = 'up' }))
-  scene:new_entity(Player(world, 50, 10, { left = 'z', right = 'x', jump = 's' }))
+  scene:new_entity(Hud('player1', 5, 5))
+  scene:new_entity(Hud('player2', 5, 20))
+  scene:new_entity(Player(world, 20, 10, 'player1', { left = 'left', right = 'right', jump = 'up' }))
+  scene:new_entity(Player(world, 50, 10, 'player2', { left = 'z', right = 'x', jump = 's' }))
   scene:new_entity(Enemy(world, 500, 10))
   scene:new_entity(Enemy(world, 100, 200))
   scene:new_entity(Enemy(world, 350, 250))

@@ -3,6 +3,7 @@ local Scene = require '/lib/scene/Scene'
 local Map = require 'Map'
 local Player = require 'Player'
 local Enemy = require 'Enemy'
+local ExtraLife = require 'ExtraLife'
 local Background = require 'Background'
 local Hud = require 'Hud'
 
@@ -57,12 +58,13 @@ function love.load()
 
   scene:new_entity(Hud('player1', 5, 5))
   scene:new_entity(Hud('player2', 5, 20))
-  scene:new_entity(Player(world, 20, 10, 'player1', { left = 'left', right = 'right', jump = 'up' }))
-  scene:new_entity(Player(world, 50, 10, 'player2', { left = 'z', right = 'x', jump = 's' }))
-  scene:new_entity(Enemy(world, 500, 10))
-  scene:new_entity(Enemy(world, 100, 200))
-  scene:new_entity(Enemy(world, 350, 250))
-  scene:new_entity(Enemy(world, 350, 400))
+  scene:new_entity(Player(20, 10, 'player1', { left = 'left', right = 'right', jump = 'up' }))
+  scene:new_entity(Player(50, 10, 'player2', { left = 'z', right = 'x', jump = 's' }))
+  scene:new_entity(Enemy(500, 10))
+  scene:new_entity(Enemy(100, 200))
+  scene:new_entity(Enemy(350, 250))
+  scene:new_entity(Enemy(350, 400))
+  scene:new_entity(ExtraLife(248, 76))
 end
 
 function love.draw()

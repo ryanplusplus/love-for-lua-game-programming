@@ -19,7 +19,7 @@ end
 
 return function(sprites, offsets, animations, initial_animation)
   local animation = {
-    current = initial_animation,
+    current = animations[initial_animation],
     offset = offsets,
     animations = animations,
     sprites = sprites

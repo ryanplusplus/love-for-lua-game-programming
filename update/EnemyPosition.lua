@@ -10,7 +10,7 @@ return function(world)
       local target_x = entity.position.x + dx
       local target_y = entity.position.y + dy
 
-      _, _, collisions = world:check(entity, target_x, target_y, function() return 'cross' end)
+      _, _, collisions = world:check(entity, target_x, target_y, function(_, other) if other.platform then return 'cross' end end)
 
       resolved_x = target_x
       resolved_y = target_y

@@ -1,6 +1,8 @@
 local anim8 = require 'lib/anim8/anim8'
 local Animation = require 'Animation'
 
+local PlayerDeath = require 'entity/PlayerDeath'
+
 return function(x, y, name, controls)
   local sprites = love.graphics.newImage('res/player.png')
 
@@ -72,6 +74,11 @@ return function(x, y, name, controls)
       [{ 'velocity', 'y' }] = 0
     },
     lives = 3,
-    name = name
+    name = name,
+    spawn_on_death = {
+      function(entity)
+        return PlayerDeath(entity.position.x, entity.position.y)
+      end
+    }
   }
 end

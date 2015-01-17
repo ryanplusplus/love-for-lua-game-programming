@@ -61,7 +61,7 @@ function love.load()
   })
 
   scene:new_entity(Hud('player1', 5, 5))
-  scene:new_entity(Hud('player2', 5, 20))
+  scene:new_entity(Hud('player2', 5, 25))
   scene:new_entity(Player(20, 10, 'player1', { left = 'left', right = 'right', jump = 'up' }))
   scene:new_entity(Player(50, 10, 'player2', { left = 'z', right = 'x', jump = 's' }))
   scene:new_entity(Enemy(500, 10))

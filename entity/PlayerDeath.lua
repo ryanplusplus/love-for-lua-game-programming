@@ -1,4 +1,4 @@
-local Animation = require 'Animation'
+local Animation = require 'utility/Animation'
 
 return function(x, y)
   local death = Animation({

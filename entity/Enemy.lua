@@ -1,4 +1,4 @@
-local Animation = require 'Animation'
+local Animation = require 'utility/Animation'
 local EnemyDeath = require 'entity/EnemyDeath'
 
 return function(x, y)

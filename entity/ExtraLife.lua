@@ -1,4 +1,4 @@
-local Animation = require 'Animation'
+local Animation = require 'utility/Animation'
 local PickedUp = require 'entity/PickedUp'
 
 return function(x, y)

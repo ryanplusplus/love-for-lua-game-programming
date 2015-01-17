@@ -1,11 +1,11 @@
 local World = (require 'lib/bump/bump').newWorld
 local Scene = require '/lib/scene/Scene'
-local Map = require 'Map'
-local Player = require 'Player'
-local Enemy = require 'Enemy'
-local ExtraLife = require 'ExtraLife'
-local Background = require 'Background'
-local Hud = require 'Hud'
+local Map = require 'entity/Map'
+local Player = require 'entity/Player'
+local Enemy = require 'entity/Enemy'
+local ExtraLife = require 'entity/ExtraLife'
+local Background = require 'entity/Background'
+local Hud = require 'entity/Hud'
 
 local scene
 

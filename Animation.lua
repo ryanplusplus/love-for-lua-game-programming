@@ -11,6 +11,10 @@ function Animation:render(x, y)
   self.animation:draw(self.sprites, x + self.offset.x, y + self.offset.y)
 end
 
+function Animation:reset()
+  self.animation:gotoFrame(1)
+end
+
 return function(config)
   local sprites = love.graphics.newImage(config.sprites)
   local grid = anim8.newGrid(config.sprite_width, config.sprite_height, sprites:getWidth(), sprites:getHeight())

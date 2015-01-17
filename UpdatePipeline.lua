@@ -11,7 +11,7 @@ return function(world, key_pressed, key_held)
     (require 'update/NonInteractingPosition')(world),
     (require 'update/ExtraLife')(world),
     (require 'update/die_when_off_stage'),
-    (require 'update/spawn_on_death'),
+    (require 'update/on_death'),
     (require 'update/respawn')(world),
     (require 'update/remove_dead')(world),
     (require 'update/remove_when_animation_complete'),

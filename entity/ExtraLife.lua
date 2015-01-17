@@ -21,10 +21,8 @@ return function(x, y)
     add_to_world = true,
     extra_life = true,
     remove_from_world_when_dead = true,
-    spawn_on_death = {
-      function(entity)
-        return PickedUp(entity.position.x, entity.position.y)
-      end
-    }
+    on_death = function(scene, entity)
+      scene:new_entity(PickedUp(entity.position.x, entity.position.y))
+    end
   }
 end

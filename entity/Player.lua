@@ -102,10 +102,8 @@ return function(x, y, name, controls)
     end,
     lives = 3,
     name = name,
-    spawn_on_death = {
-      function(entity)
-        return PlayerDeath(entity.position.x, entity.position.y)
-      end
-    }
+    on_death = function(scene, entity)
+      scene:new_entity(PlayerDeath(entity.position.x, entity.position.y))
+    end
   }
 end

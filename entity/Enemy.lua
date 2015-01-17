@@ -52,10 +52,8 @@ return function(x, y)
     },
     remove_from_world_when_dead = true,
     bounciness = 0.9,
-    spawn_on_death = {
-      function(entity)
-        return EnemyDeath(entity.position.x, entity.position.y, entity.direction)
-      end
-    }
+    on_death = function(scene, entity)
+      scene:new_entity(EnemyDeath(entity.position.x, entity.position.y, entity.direction))
+    end
   }
 end

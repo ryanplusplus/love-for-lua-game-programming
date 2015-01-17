@@ -1,11 +1,17 @@
-local anim8 = require 'lib/anim8/anim8'
 local Animation = require 'Animation'
 
 return function(x, y)
-  local sprites = love.graphics.newImage('res/player_death.png')
-
-  local a8 = anim8.newGrid(32, 32, sprites:getWidth(), sprites:getHeight())
-  local death = anim8.newAnimation(a8('1-4', 1), 0.05)
+  local death = Animation({
+    sprites = 'res/player_death.png',
+    sprite_width = 32,
+    sprite_height = 32,
+    offsets = {
+      x = -8,
+      y = -6
+    },
+    frames = { '1-4', 1 },
+    frame_time = 0.05
+  })
 
   return {
     dies_when_off_stage = true,
@@ -24,17 +30,7 @@ return function(x, y)
       height = 26
     },
     add_to_world = true,
-    animation = Animation(
-      sprites,
-      {
-        x = -8,
-        y = -6
-      },
-      {
-        death = death
-      },
-      'death'
-    ),
+    animation = death,
     non_interacting = true
   }
 end

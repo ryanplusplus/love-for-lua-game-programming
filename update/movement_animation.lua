@@ -1,22 +1,24 @@
 return function(scene, dt)
-  for entity in pairs(scene:entities_with('animation', 'velocity', 'on_ground', 'direction', 'movement_animations')) do
-    if entity.velocity.x < 0 then
-      if entity.on_ground then
-        entity.animation:select(entity.movement_animations.walk_left)
+  for entity in pairs(scene:entities_with('animation', 'movement_animations', 'velocity', 'on_ground', 'direction')) do
+    if entity.on_ground then
+      if entity.velocity.x == 0 then
+        if entity.direction == 1 then
+          entity.animation = entity.movement_animations.idle_right
+        else
+          entity.animation = entity.movement_animations.idle_left
+        end
       else
-        entity.animation:select(entity.movement_animations.air_left)
-      end
-    elseif entity.velocity.x > 0 then
-      if entity.on_ground then
-        entity.animation:select(entity.movement_animations.walk_right)
-      else
-        entity.animation:select(entity.movement_animations.air_right)
+        if entity.direction == 1 then
+          entity.animation = entity.movement_animations.walk_right
+        else
+          entity.animation = entity.movement_animations.walk_left
+        end
       end
     else
       if entity.direction == 1 then
-        entity.animation:select(entity.movement_animations.idle_right)
+        entity.animation = entity.movement_animations.air_right
       else
-        entity.animation:select(entity.movement_animations.idle_left)
+        entity.animation = entity.movement_animations.air_left
       end
     end
   end

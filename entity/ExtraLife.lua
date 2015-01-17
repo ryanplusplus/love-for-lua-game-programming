@@ -1,11 +1,13 @@
-local anim8 = require 'lib/anim8/anim8'
 local Animation = require 'Animation'
 
 return function(x, y)
-  local sprites = love.graphics.newImage('res/extra_life.png')
-
-  local a8 = anim8.newGrid(16, 16, sprites:getWidth(), sprites:getHeight())
-  local idle = anim8.newAnimation(a8('1-4', 1), 0.25)
+  local animation = Animation({
+    sprites = 'res/extra_life.png',
+    sprite_width = 16,
+    sprite_height = 16,
+    frames = { '1-4', 1 },
+    frame_time = 0.25
+  })
 
   return {
     position = {
@@ -16,17 +18,7 @@ return function(x, y)
       width = 16,
       height = 16
     },
-    animation = Animation(
-      sprites,
-      {
-        x = 0,
-        y = 0
-      },
-      {
-        idle = idle
-      },
-      'idle'
-    ),
+    animation = animation,
     add_to_world = true,
     extra_life = true,
     remove_from_world_when_dead = true

@@ -21,10 +21,13 @@ end
 
 return function(config)
   local sprites = love.graphics.newImage(config.sprites)
-  local grid = anim8.newGrid(config.sprite_width, sprites:getHeight(), sprites:getWidth(), sprites:getHeight())
+  local frame_width = config.sprite_width or sprites:getHeight()
+  local frame_count = sprites:getWidth() / frame_width
+  local grid = anim8.newGrid(frame_width, sprites:getHeight(), sprites:getWidth(), sprites:getHeight())
+
 
   local loop = (config.once and 'pauseAtEnd') or nil
-  local animation = anim8.newAnimation(grid:getFrames('1-' .. tostring(sprites:getWidth() / config.sprite_width), 1), config.frame_time, loop)
+  local animation = anim8.newAnimation(grid:getFrames('1-' .. tostring(frame_count), 1), config.frame_time, loop)
 
   if config.flip_horizontal then
     animation:flipH()

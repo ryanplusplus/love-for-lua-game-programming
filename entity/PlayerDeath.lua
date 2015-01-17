@@ -3,8 +3,6 @@ local Animation = require 'Animation'
 return function(x, y)
   local death = Animation({
     sprites = 'res/player_death.png',
-    sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6

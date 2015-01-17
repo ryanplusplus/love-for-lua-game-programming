@@ -4,7 +4,6 @@ local PickedUp = require 'entity/PickedUp'
 return function(x, y)
   local animation = Animation({
     sprites = 'res/extra_life.png',
-    sprite_width = 16,
     frame_time = 0.25
   })
 

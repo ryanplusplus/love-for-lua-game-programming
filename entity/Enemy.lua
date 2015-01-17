@@ -4,7 +4,6 @@ local EnemyDeath = require 'entity/EnemyDeath'
 return function(x, y)
   local walk_right = Animation({
     sprites = 'res/enemy_walk_right.png',
-    sprite_width = 32,
     offsets = {
       x = -8,
       y = -6
@@ -14,7 +13,6 @@ return function(x, y)
 
   local walk_left = Animation({
     sprites = 'res/enemy_walk_left.png',
-    sprite_width = 32,
     offsets = {
       x = -8,
       y = -6

@@ -11,7 +11,6 @@ return function(x, y, direction)
 
   local death = Animation({
     sprites = image,
-    sprite_width = 32,
     frame_time = 0.5,
     offsets = {
       x = -8,

@@ -16,6 +16,7 @@ return function(x, y)
       width = 16,
       height = 16
     },
+    pickup = true,
     animation = animation,
     add_to_world = true,
     extra_life = true,

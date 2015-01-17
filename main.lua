@@ -34,7 +34,7 @@ function love.load()
 
   scene:add_render_system((require 'render/Drawable')('background'))
   scene:add_render_system((require 'render/Drawable')('map'))
-  scene:add_render_system(require 'render/animation')
+  scene:add_render_system((require 'render/Animation')({ 'player', 'enemy', 'pickup' }))
   scene:add_render_system(require 'render/hud')
 
   scene:add_update_system((require 'update/AddToWorld')(world))

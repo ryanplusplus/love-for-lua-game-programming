@@ -1,4 +1,5 @@
 local Animation = require 'Animation'
+local EnemyDeath = require 'entity/EnemyDeath'
 
 return function(x, y)
   local walk_right = Animation({
@@ -52,6 +53,11 @@ return function(x, y)
       speed = 100
     },
     remove_from_world_when_dead = true,
-    bounciness = 0.9
+    bounciness = 0.9,
+    spawn_on_death = {
+      function(entity)
+        return EnemyDeath(entity.position.x, entity.position.y, entity.direction)
+      end
+    }
   }
 end

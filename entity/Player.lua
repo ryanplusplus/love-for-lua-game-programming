@@ -95,8 +95,8 @@ return function(x, y, name, controls)
     add_to_world = true,
     player = true,
     respawn = function(entity)
-      entity.position.x = 20
-      entity.position.y = 10
+      entity.position.x = x
+      entity.position.y = y
       entity.direction = 1
       entity.velocity.y = 0
     end,

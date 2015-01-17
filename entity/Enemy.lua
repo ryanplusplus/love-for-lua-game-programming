@@ -2,28 +2,23 @@ local Animation = require 'Animation'
 
 return function(x, y)
   local walk_right = Animation({
-    sprites = 'res/enemy.png',
+    sprites = 'res/enemy_walk_right.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { '1-4', 1 },
     frame_time = 0.05
   })
 
   local walk_left = Animation({
-    sprites = 'res/enemy.png',
+    sprites = 'res/enemy_walk_left.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { '1-4', 1 },
-    frame_time = 0.05,
-    flip_horizontal = true
+    frame_time = 0.05
   })
 
   return {

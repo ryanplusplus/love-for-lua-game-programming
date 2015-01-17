@@ -3,76 +3,62 @@ local PlayerDeath = require 'entity/PlayerDeath'
 
 return function(x, y, name, controls)
   local walk_right = Animation({
-    sprites = 'res/player_walk.png',
+    sprites = 'res/player_walk_right.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { '1-8', 1 },
     frame_time = 0.05
   })
 
   local walk_left = Animation({
-    sprites = 'res/player_walk.png',
+    sprites = 'res/player_walk_left.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { '1-8', 1 },
-    frame_time = 0.05,
-    flip_horizontal = true
+    frame_time = 0.05
   })
 
   local idle_right = Animation({
-    sprites = 'res/player_walk.png',
+    sprites = 'res/player_idle_right.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { 1, 1 },
     frame_time = 0.05
   })
 
   local idle_left = Animation({
-    sprites = 'res/player_walk.png',
+    sprites = 'res/player_idle_left.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { 1, 1 },
-    frame_time = 0.05,
-    flip_horizontal = true
+    frame_time = 0.05
   })
 
   local jump_right = Animation({
     sprites = 'res/player_jump_right.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { 1, 1 },
     frame_time = 0.05
   })
 
   local jump_left = Animation({
     sprites = 'res/player_jump_left.png',
     sprite_width = 32,
-    sprite_height = 32,
     offsets = {
       x = -8,
       y = -6
     },
-    frames = { 1, 1 },
     frame_time = 0.05
   })
 

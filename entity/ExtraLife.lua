@@ -5,8 +5,6 @@ return function(x, y)
   local animation = Animation({
     sprites = 'res/extra_life.png',
     sprite_width = 16,
-    sprite_height = 16,
-    frames = { '1-4', 1 },
     frame_time = 0.25
   })
 

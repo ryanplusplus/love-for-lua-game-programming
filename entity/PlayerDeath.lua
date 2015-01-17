@@ -10,27 +10,16 @@ return function(x, y)
       y = -6
     },
     frames = { '1-4', 1 },
-    frame_time = 0.05
+    frame_time = 0.1,
+    once = true
   })
 
   return {
-    dies_when_off_stage = true,
+    remove_when_animation_complete = true,
     position = {
       x = x,
       y = y
     },
-    velocity = {
-      x = 0,
-      y = 0
-    },
-    direction = 1,
-    has_mass = true,
-    size = {
-      width = 16,
-      height = 26
-    },
-    add_to_world = true,
-    animation = death,
-    non_interacting = true
+    animation = death
   }
 end

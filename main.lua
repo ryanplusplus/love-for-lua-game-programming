@@ -51,6 +51,7 @@ function love.load()
   scene:add_update_system(require 'update/spawn_on_death')
   scene:add_update_system((require 'update/respawn')(world))
   scene:add_update_system((require 'update/remove_dead')(world))
+  scene:add_update_system(require 'update/remove_when_animation_complete')
   scene:add_update_system(require 'update/animation')
   scene:add_update_system(reset_keys)
 

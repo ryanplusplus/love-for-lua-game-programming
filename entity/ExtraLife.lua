@@ -1,4 +1,5 @@
 local Animation = require 'Animation'
+local PickedUp = require 'entity/PickedUp'
 
 return function(x, y)
   local animation = Animation({
@@ -21,6 +22,11 @@ return function(x, y)
     animation = animation,
     add_to_world = true,
     extra_life = true,
-    remove_from_world_when_dead = true
+    remove_from_world_when_dead = true,
+    spawn_on_death = {
+      function(entity)
+        return PickedUp(entity.position.x, entity.position.y)
+      end
+    }
   }
 end

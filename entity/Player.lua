@@ -94,12 +94,12 @@ return function(x, y, name, controls)
     },
     add_to_world = true,
     player = true,
-    respawn = {
-      [{ 'position', 'x' }] = 20,
-      [{ 'position', 'y' }] = 10,
-      [{ 'direction' }] = 'right',
-      [{ 'velocity', 'y' }] = 0
-    },
+    respawn = function(entity)
+      entity.position.x = 20
+      entity.position.y = 10
+      entity.direction = 1
+      entity.velocity.y = 0
+    end,
     lives = 3,
     name = name,
     spawn_on_death = {

@@ -11,15 +11,7 @@ return function(world)
 
       entity.dead = nil
 
-      for path, value in pairs(entity.respawn) do
-        local thing = entity
-
-        for i = 1, #path - 1 do
-          thing = thing[path[i]]
-        end
-
-        thing[path[#path]] = value
-      end
+      entity.respawn(entity)
 
       if entity.position then
         world:update(entity, entity.position.x, entity.position.y)

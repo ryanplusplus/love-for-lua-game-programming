@@ -1,5 +1,7 @@
 return function(scene, dt)
-  for entity in pairs(scene:entities_with('on_death', 'dead')) do
-    entity.on_death(scene, entity)
+  for event in pairs(scene:entities_with('event', 'death')) do
+    if event.death.entity.on_death then
+      event.death.entity.on_death(scene, event.death.entity)
+    end
   end
 end

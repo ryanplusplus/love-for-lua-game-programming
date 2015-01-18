@@ -50,6 +50,7 @@ return function(x, y)
     basic_enemy_ai = {
       speed = 100
     },
+    solid = true,
     remove_from_world_when_dead = true,
     bounciness = 0.9,
     on_death = function(scene, entity)

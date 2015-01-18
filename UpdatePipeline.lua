@@ -16,6 +16,7 @@ return function(world, key_pressed, key_held)
     (require 'update/respawn')(world),
     (require 'update/remove_dead')(world),
     (require 'update/remove_when_animation_complete'),
-    (require 'update/animation')
+    (require 'update/animation'),
+    (require 'update/game_over')
   }
 end

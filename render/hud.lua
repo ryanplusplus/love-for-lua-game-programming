@@ -20,10 +20,10 @@ return function(scene)
         end
 
         love.graphics.setFont(font)
-        love.graphics.setColor(255, 255, 255, 200)
-        love.graphics.rectangle('line', x, y, box_width, box_height)
         love.graphics.setColor(0, 0, 0, 175)
         love.graphics.rectangle('fill', x, y, box_width, box_height)
+        love.graphics.setColor(255, 255, 255, 200)
+        love.graphics.rectangle('line', x, y, box_width, box_height)
         love.graphics.setColor(255, 255, 255, 255)
         love.graphics.print(text, x + width_padding, y + height_padding)
       end

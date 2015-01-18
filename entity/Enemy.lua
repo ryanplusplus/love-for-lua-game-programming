@@ -51,7 +51,6 @@ return function(x, y)
       speed = 100
     },
     solid = true,
-    remove_from_world_when_dead = true,
     bounciness = 0.9,
     on_death = function(scene, entity)
       scene:new_entity(EnemyDeath(entity.position.x, entity.position.y, entity.direction))

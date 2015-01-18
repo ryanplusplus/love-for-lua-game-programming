@@ -20,7 +20,6 @@ return function(x, y)
     animation = animation,
     add_to_world = true,
     extra_life = true,
-    remove_from_world_when_dead = true,
     on_death = function(scene, entity)
       scene:new_entity(PickedUp(entity.position.x, entity.position.y))
     end

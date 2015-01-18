@@ -3,7 +3,8 @@ return function(world)
     for entity in pairs(scene:entities_with('dead')) do
       scene:remove_entity(entity)
 
-      if entity.remove_from_world_when_dead then
+      if entity.in_world then
+        print('removing from world')
         world:remove(entity)
       end
     end

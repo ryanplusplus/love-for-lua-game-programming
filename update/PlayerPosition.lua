@@ -39,13 +39,23 @@ return function(world)
             entity.velocity.y = -entity.velocity.y * bounciness
           end
 
-          if other.enemy then
-            other.dead = true
-          end
+          scene:new_entity({
+            event = true,
+            jumped_on = {
+              jumper = entity,
+              jumpee = other
+            }
+          })
 
           resolved_y = collision.touch.y
-        elseif other.enemy then
-          entity.dead = true
+        else
+          scene:new_entity({
+            event = true,
+            ran_into = {
+              entity = entity,
+              other = other
+            }
+          })
         end
       end
 

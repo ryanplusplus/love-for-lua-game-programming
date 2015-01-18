@@ -9,6 +9,8 @@ return function(world, key_pressed, key_held)
     (require 'update/EnemyPosition')(world),
     (require 'update/NonInteractingPosition')(world),
     (require 'update/ExtraLife')(world),
+    (require 'update/player_dies_after_running_into_enemy'),
+    (require 'update/enemy_dies_when_jumped_on'),
     (require 'update/cannot_leave_map'),
     (require 'update/die_when_off_stage'),
     (require 'update/movement_animation'),
@@ -17,6 +19,7 @@ return function(world, key_pressed, key_held)
     (require 'update/remove_dead')(world),
     (require 'update/remove_when_animation_complete'),
     (require 'update/animation'),
-    (require 'update/game_over')
+    (require 'update/game_over'),
+    (require 'update/remove_events')
   }
 end

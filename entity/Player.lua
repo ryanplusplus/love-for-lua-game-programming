@@ -104,6 +104,7 @@ return function(x, y, name, controls)
     name = name,
     on_death = function(scene, entity)
       scene:new_entity(PlayerDeath(entity.position.x, entity.position.y))
-    end
+    end,
+    cannot_leave_map = true
   }
 end

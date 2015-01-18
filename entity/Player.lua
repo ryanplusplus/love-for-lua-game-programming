@@ -112,6 +112,7 @@ return function(x, y, name, controls)
     lives = 3,
     name = name,
     death_animation = death,
-    cannot_leave_map = true
+    cannot_leave_map = true,
+    score = 0
   }
 end

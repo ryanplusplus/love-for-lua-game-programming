@@ -11,6 +11,7 @@ return function(world, key_pressed, key_held)
     (require 'update/extra_life_picked_up_by_player'),
     (require 'update/player_dies_after_running_into_enemy'),
     (require 'update/enemy_dies_when_jumped_on'),
+    (require 'update/player_score_for_kill'),
     (require 'update/cannot_leave_map'),
     (require 'update/die_when_off_stage'),
     (require 'update/movement_animation'),

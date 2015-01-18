@@ -6,9 +6,9 @@ local height_padding = 1
 return function(scene)
   for entity in pairs(scene:entities_with('hud')) do
     local hud = entity.hud
-    for player in pairs(scene:entities_with('player', 'name', 'lives')) do
+    for player in pairs(scene:entities_with('player', 'name', 'lives', 'score')) do
       if hud.player_name == player.name then
-        local text = player.name .. ': ' .. player.lives
+        local text = 'Name: ' .. player.name .. ', Lives: ' .. player.lives .. ', Score: ' .. player.score
         local box_width = font:getWidth(text) + 2 * width_padding
         local box_height = font:getHeight(text) + 2 * height_padding
 

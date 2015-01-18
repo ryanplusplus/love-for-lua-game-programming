@@ -75,6 +75,7 @@ return function(x, y)
     directional_death_animation = {
       [1] = death_right,
       [-1] = death_left
-    }
+    },
+    points = 10
   }
 end

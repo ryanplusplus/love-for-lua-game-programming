@@ -11,6 +11,14 @@ return function(scene, dt)
           entity = enemy
         }
       })
+
+      scene:new_entity({
+        event = true,
+        kill = {
+          killer = event.jumped_on.jumper,
+          killed = enemy
+        }
+      })
     end
   end
 end

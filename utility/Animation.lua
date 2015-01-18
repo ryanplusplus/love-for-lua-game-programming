@@ -13,6 +13,17 @@ end
 
 function Animation:reset()
   self.animation:gotoFrame(1)
+  self.animation:resume()
+end
+
+function Animation:clone()
+  local clone = {
+    offset = self.offset,
+    animation = self.animation:clone(),
+    sprites = self.sprites
+  }
+
+  return setmetatable(clone, Animation)
 end
 
 function Animation:is_complete()

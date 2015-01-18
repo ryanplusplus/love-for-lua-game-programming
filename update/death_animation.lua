@@ -3,7 +3,7 @@ return function(scene, dt)
     local entity = event.death.entity
     if entity.death_animation and entity.position then
       scene:new_entity({
-        animation = entity.death_animation,
+        animation = entity.death_animation:clone(),
         remove_when_animation_complete = true,
         position = {
           x = entity.position.x,

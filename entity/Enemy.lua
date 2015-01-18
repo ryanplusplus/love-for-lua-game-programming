@@ -1,11 +1,10 @@
 local Animation = require 'utility/Animation'
-local EnemyDeath = require 'entity/EnemyDeath'
 
 return function(x, y)
   local walk_right = Animation({
     sprites = 'res/enemy_walk_right.png',
     offsets = {
-      x = -8,
+      x = -6,
       y = -6
     },
     frame_time = 0.05
@@ -14,10 +13,30 @@ return function(x, y)
   local walk_left = Animation({
     sprites = 'res/enemy_walk_left.png',
     offsets = {
-      x = -8,
+      x = -6,
       y = -6
     },
     frame_time = 0.05
+  })
+
+  local death_left = Animation({
+    sprites = 'res/enemy_die_left.png',
+    frame_time = 0.5,
+    offsets = {
+      x = -6,
+      y = -6
+    },
+    once = true
+  })
+
+  local death_right = Animation({
+    sprites = 'res/enemy_die_right.png',
+    frame_time = 0.5,
+    offsets = {
+      x = -6,
+      y = -6
+    },
+    once = true
   })
 
   return {
@@ -33,7 +52,7 @@ return function(x, y)
     has_mass = true,
     on_ground = false,
     size = {
-      width = 18,
+      width = 22,
       height = 26
     },
     animation = walk_right,
@@ -52,8 +71,10 @@ return function(x, y)
     },
     solid = true,
     bounciness = 0.9,
-    on_death = function(scene, entity)
-      scene:new_entity(EnemyDeath(entity.position.x, entity.position.y, entity.direction))
-    end
+    death_animation = death_right,
+    directional_death_animation = {
+      [1] = death_right,
+      [-1] = death_left
+    }
   }
 end

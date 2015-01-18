@@ -1,10 +1,15 @@
 local Animation = require 'utility/Animation'
-local PickedUp = require 'entity/PickedUp'
 
 return function(x, y)
   local animation = Animation({
     sprites = 'res/extra_life.png',
     frame_time = 0.25
+  })
+
+  local pickup = Animation({
+    sprites = 'res/picked_up.png',
+    frame_time = 0.05,
+    once = true
   })
 
   return {
@@ -20,8 +25,6 @@ return function(x, y)
     animation = animation,
     add_to_world = true,
     extra_life = true,
-    on_death = function(scene, entity)
-      scene:new_entity(PickedUp(entity.position.x, entity.position.y))
-    end
+    death_animation = pickup
   }
 end

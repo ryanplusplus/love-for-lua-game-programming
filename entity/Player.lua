@@ -1,5 +1,4 @@
 local Animation = require 'utility/Animation'
-local PlayerDeath = require 'entity/PlayerDeath'
 
 return function(x, y, name, controls)
   local walk_right = Animation({
@@ -56,6 +55,16 @@ return function(x, y, name, controls)
     frame_time = 0.05
   })
 
+  local death = Animation({
+    sprites = 'res/player_death.png',
+    offsets = {
+      x = -8,
+      y = -6
+    },
+    frame_time = 0.1,
+    once = true
+  })
+
   return {
     dies_when_off_stage = true,
     position = {
@@ -102,9 +111,7 @@ return function(x, y, name, controls)
     end,
     lives = 3,
     name = name,
-    on_death = function(scene, entity)
-      scene:new_entity(PlayerDeath(entity.position.x, entity.position.y))
-    end,
+    death_animation = death,
     cannot_leave_map = true
   }
 end

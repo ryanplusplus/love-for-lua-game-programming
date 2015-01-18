@@ -4,7 +4,6 @@ return function(world)
       scene:remove_entity(entity)
 
       if entity.in_world then
-        print('removing from world')
         world:remove(entity)
       end
     end

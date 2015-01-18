@@ -1,9 +1,10 @@
-return function(player_name, x, y)
+return function(config)
   return {
     hud = {
-      player_name = player_name,
-      x = x,
-      y = y
+      player_name = config.player_name,
+      x = config.x,
+      y = config.y,
+      justify = config.justify
     }
   }
 end

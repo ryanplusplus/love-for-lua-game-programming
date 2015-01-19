@@ -24,6 +24,13 @@ return function(scene, dt)
             killed = jumpee
           }
         })
+      else
+        scene:new_entity({
+          event = true,
+          damaged = {
+            entity = jumpee
+          }
+        })
       end
     end
   end

@@ -108,12 +108,16 @@ return function(x, y, name, controls)
       entity.position.y = y
       entity.direction = 1
       entity.velocity.y = 0
+      entity.life = entity.initial_life
     end,
     lives = 3,
     name = name,
     death_animation = death,
     cannot_leave_map = true,
     score = 0,
-    jump_damage = 10
+    jump_damage = 10,
+    damaged_when_run_into = true,
+    life = 1,
+    initial_life = 1
   }
 end

@@ -9,7 +9,7 @@ return function(world, key_pressed, key_held)
     (require 'update/EnemyPosition')(world),
     (require 'update/NonInteractingPosition')(world),
     (require 'update/extra_life_picked_up_by_player'),
-    (require 'update/player_dies_after_running_into_enemy'),
+    (require 'update/damaged_when_run_into'),
     (require 'update/damaged_when_jumped_on'),
     (require 'update/player_score_for_kill'),
     (require 'update/cannot_leave_map'),

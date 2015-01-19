@@ -37,7 +37,8 @@ return function(world)
             event = true,
             jumped_on = {
               jumper = player,
-              jumpee = other
+              jumpee = other,
+              damage = player.jump_damage
             }
           })
 

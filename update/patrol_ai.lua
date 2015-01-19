@@ -1,11 +1,11 @@
 return function(world)
   return function(scene, dt)
-    for entity in pairs(scene:entities_with('basic_enemy_ai', 'velocity', 'direction', 'on_ground', 'position')) do
+    for entity in pairs(scene:entities_with('patrol_ai', 'velocity', 'direction', 'on_ground', 'position')) do
       if entity.on_ground and entity.velocity.x == 0 then
         if entity.direction == 1 then
-          entity.velocity.x = entity.basic_enemy_ai.speed
+          entity.velocity.x = entity.patrol_ai.speed
         else
-          entity.velocity.x = -entity.basic_enemy_ai.speed
+          entity.velocity.x = -entity.patrol_ai.speed
         end
       elseif entity.on_ground then
         local dx = entity.velocity.x * dt

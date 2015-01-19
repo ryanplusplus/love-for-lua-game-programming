@@ -66,7 +66,7 @@ return function(x, y)
     },
     add_to_world = true,
     enemy = true,
-    basic_enemy_ai = {
+    patrol_ai = {
       speed = 100
     },
     solid = true,
@@ -76,6 +76,8 @@ return function(x, y)
       [1] = death_right,
       [-1] = death_left
     },
-    points = 10
+    points = 10,
+    life = 15,
+    damaged_when_jumped_on = true
   }
 end

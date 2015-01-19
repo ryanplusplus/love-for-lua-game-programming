@@ -113,6 +113,7 @@ return function(x, y, name, controls)
     name = name,
     death_animation = death,
     cannot_leave_map = true,
-    score = 0
+    score = 0,
+    jump_damage = 10
   }
 end

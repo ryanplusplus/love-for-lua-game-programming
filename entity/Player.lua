@@ -66,7 +66,6 @@ return function(x, y, name, controls)
   })
 
   return {
-    dies_when_off_stage = true,
     position = {
       x = x,
       y = y
@@ -120,6 +119,7 @@ return function(x, y, name, controls)
     life = 1,
     initial_life = 1,
     can_pickup_powerups = true,
+    dies_when_off_stage = true,
     one_way_platform_position = true
   }
 end

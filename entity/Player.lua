@@ -118,6 +118,8 @@ return function(x, y, name, controls)
     jump_damage = 10,
     damaged_when_run_into = true,
     life = 1,
-    initial_life = 1
+    initial_life = 1,
+    can_pickup_powerups = true,
+    one_way_platform_position = true
   }
 end

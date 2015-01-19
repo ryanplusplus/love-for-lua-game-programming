@@ -79,6 +79,7 @@ return function(x, y)
     points = 10,
     life = 15,
     damaged_when_jumped_on = true,
-    damage_dealt_when_run_into = 10
+    damage_dealt_when_run_into = 10,
+    one_way_platform_position = true
   }
 end

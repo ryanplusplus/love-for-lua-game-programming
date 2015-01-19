@@ -1,6 +1,6 @@
 return function(world)
   return function(scene, dt)
-    for entity in pairs(scene:entities_with('velocity', 'position', 'size', 'non_interacting')) do
+    for entity in pairs(scene:entities_with('velocity', 'position', 'size', 'non_interacting_position')) do
       local dx = entity.velocity.x * dt
       local dy = entity.velocity.y * dt
 

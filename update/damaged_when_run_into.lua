@@ -1,43 +1,41 @@
 return function(scene, dt)
+  local interactions = {}
+
   for event in pairs(scene:entities_with('event', 'ran_into')) do
-    local interactions = {
-      {
-        entity = event.ran_into.entity,
-        other = event.ran_into.other
-      },
-      {
-        other = event.ran_into.entity,
-        entity = event.ran_into.other
-      }
-    }
+    local entity = event.ran_into.entity
+    local other = event.ran_into.other
 
-    for _, interaction in pairs(interactions) do
-      local entity = interaction.entity
-      local other = interaction.other
+    interactions[entity] = interactions[entity] or {}
+    interactions[entity][other] = true
+  end
 
-      if entity.damaged_when_run_into and other.damage_dealt_when_run_into then
-        if entity.life then
-          entity.life = entity.life - other.damage_dealt_when_run_into
+  for primary in pairs(interactions) do
+    for other in pairs(interactions[primary]) do
+
+      if primary.damaged_when_run_into and other.damage_dealt_when_run_into then
+        if primary.life then
+          primary.life = primary.life - other.damage_dealt_when_run_into
         end
 
-        if entity.life == nil or entity.life <=0 then
-          entity.dead = true
+        if primary.life == nil or primary.life <=0 then
+          primary.dead = true
 
           scene:new_entity({
             event = true,
             death = {
-              entity = entity
+              entity = primary
             }
           })
         else
           scene:new_entity({
             event = true,
             damaged = {
-              entity = entity
+              entity = primary
             }
           })
         end
       end
+
     end
   end
 end

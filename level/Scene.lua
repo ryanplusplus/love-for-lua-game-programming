@@ -10,7 +10,7 @@ local Hud = require 'entity/Hud'
 local UpdatePipeline = require 'level/UpdatePipeline'
 local RenderPipeline = require 'level/RenderPipeline'
 
-return function(key_pressed, key_held)
+return function(key_pressed, key_held, background, map)
   local world = World()
 
   local scene = Scene()
@@ -26,8 +26,8 @@ return function(key_pressed, key_held)
   scene:add_update_system(reset_keys)
 
   scene:new_entity({
-    background = Background('res/background.png'),
-    map = Map(world, 'res/map.tmx')
+    background = Background(background),
+    map = Map(world, map)
   })
 
   scene:new_entity(Hud({ player_name = 'player1', x = 635, y = 5, justify = 'right' }))

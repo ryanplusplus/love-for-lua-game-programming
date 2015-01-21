@@ -21,7 +21,7 @@ function reset_keys()
 end
 
 function love.load()
-  scene = LevelScene(key_pressed, key_held)
+  scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx')
 end
 
 function love.draw()

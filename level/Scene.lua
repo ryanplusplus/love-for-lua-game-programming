@@ -12,7 +12,6 @@ local RenderPipeline = require 'level/RenderPipeline'
 
 return function(key_pressed, key_held, background, map)
   local world = World()
-
   local scene = Scene()
 
   for _, render_system in ipairs(RenderPipeline(world, key_pressed, key_held)) do

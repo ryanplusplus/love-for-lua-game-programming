@@ -1,4 +1,5 @@
 local LevelScene = require 'level/Scene'
+local MenuScene = require 'menu/Scene'
 
 local scene
 
@@ -21,7 +22,9 @@ function reset_keys()
 end
 
 function love.load()
-  scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx')
+  scene = MenuScene(key_pressed, function()
+    scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx')
+  end)
 end
 
 function love.draw()

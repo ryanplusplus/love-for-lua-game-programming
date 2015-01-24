@@ -15,16 +15,20 @@ function love.keyreleased(k)
   key_held[k] = nil
 end
 
-function reset_keys()
+local function reset_keys()
   for key in pairs(key_pressed) do
     key_pressed[key] = nil
   end
 end
 
-function love.load()
+local function init()
   scene = MenuScene(key_pressed, function()
-    scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx')
+    scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx', init)
   end)
+end
+
+function love.load()
+  init()
 end
 
 function love.draw()
@@ -33,4 +37,5 @@ end
 
 function love.update(dt)
   scene:update(dt)
+  reset_keys()
 end

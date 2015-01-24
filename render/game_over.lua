@@ -15,7 +15,7 @@ return function(scene)
   end
 
   for entity in pairs(scene:entities_with('game_over')) do
-    local text = 'Game Over'
+    local text = 'Game Over - Press Enter to Continue'
     local box_width = font:getWidth(text) + 2 * width_padding
     local box_height = font:getHeight(text) + 2 * height_padding
 

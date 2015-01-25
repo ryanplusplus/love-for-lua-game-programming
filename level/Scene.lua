@@ -18,17 +18,9 @@ return function(key_pressed, key_held, background, map, on_game_over)
     scene:add_render_system(render_system)
   end
 
-  for _, update_system in ipairs(UpdatePipeline(world, key_pressed, key_held)) do
+  for _, update_system in ipairs(UpdatePipeline(world, key_pressed, key_held, on_game_over)) do
     scene:add_update_system(update_system)
   end
-
-  scene:add_update_system(function(scene, dt)
-    for entity in pairs(scene:entities_with('game_over')) do
-      if key_pressed['return'] then
-        on_game_over()
-      end
-    end
-  end)
 
   scene:add_update_system(reset_keys)
 

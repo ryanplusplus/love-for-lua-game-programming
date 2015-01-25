@@ -20,8 +20,8 @@ return function(world, key_pressed, key_held, on_game_over)
     (require 'update/remove_dead')(world),
     (require 'update/remove_when_animation_complete'),
     (require 'update/animation'),
-    (require 'update/GameOver')(key_pressed, on_game_over),
     (require 'update/game_over_when_no_players_left'),
+    (require 'update/GameOver')(key_pressed, on_game_over),
     (require 'update/remove_events')
   }
 end

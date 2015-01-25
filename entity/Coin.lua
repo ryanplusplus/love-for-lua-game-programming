@@ -1,11 +1,8 @@
 local Animation = require 'utility/Animation'
 
-return function(x, y)
-  x = x or 0
-  y = y or 0
-
+return function(sprites, points)
   local animation = Animation({
-    sprites = 'res/gold_coin.png',
+    sprites = sprites,
     frame_time = 0.25
   })
 
@@ -33,7 +30,7 @@ return function(x, y)
     animation = animation,
     add_to_world = true,
     coin = true,
-    points = 10,
+    points = points,
     death_animation = pickup,
     one_way_platform_position = true
   }

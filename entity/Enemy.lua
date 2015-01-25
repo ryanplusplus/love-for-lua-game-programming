@@ -1,5 +1,6 @@
 local Animation = require 'utility/Animation'
-local Coin = require 'entity/Coin'
+local GoldCoin = require 'entity/GoldCoin'
+local SilverCoin = require 'entity/SilverCoin'
 
 return function(x, y)
   local walk_right = Animation({
@@ -82,6 +83,9 @@ return function(x, y)
     damaged_when_jumped_on = true,
     damage_dealt_when_run_into = 10,
     one_way_platform_position = true,
-    drops = Coin()
+    drops = {
+      [GoldCoin()] = 1,
+      [SilverCoin()] = 4
+    }
   }
 end

@@ -3,6 +3,7 @@ return function(file)
 
   return {
     draw = function()
+      love.graphics.setColor(255, 255, 255, 255)
       love.graphics.draw(background)
     end
   }

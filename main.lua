@@ -23,7 +23,7 @@ end
 
 local function init()
   scene = MenuScene(key_pressed, function()
-    scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx', init)
+    scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx', init, init)
   end)
 end
 

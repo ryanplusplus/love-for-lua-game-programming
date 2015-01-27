@@ -1,4 +1,4 @@
-return function(world, key_pressed, key_held, on_win)
+return function(world, key_pressed, key_held, on_game_over, on_win)
   return {
     (require 'update/AddToWorld')(world),
     (require 'update/Jump')(key_pressed),

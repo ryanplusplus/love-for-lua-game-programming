@@ -10,7 +10,7 @@ local Hud = require 'entity/Hud'
 local UpdatePipeline = require 'level/UpdatePipeline'
 local RenderPipeline = require 'level/RenderPipeline'
 
-return function(key_pressed, key_held, background, map, on_game_over)
+return function(key_pressed, key_held, background, map, on_game_over, on_win)
   local world = World()
   local scene = Scene()
 
@@ -18,7 +18,7 @@ return function(key_pressed, key_held, background, map, on_game_over)
     scene:add_render_system(render_system)
   end
 
-  for _, update_system in ipairs(UpdatePipeline(world, key_pressed, key_held, on_game_over)) do
+  for _, update_system in ipairs(UpdatePipeline(world, key_pressed, key_held, on_game_over, on_win)) do
     scene:add_update_system(update_system)
   end
 

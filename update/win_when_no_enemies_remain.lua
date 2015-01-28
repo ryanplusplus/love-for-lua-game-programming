@@ -5,5 +5,10 @@ return function(scene, dt)
     return
   end
 
+  for entity in pairs(scene:entities_with('win')) do
+    return
+  end
+
+  print('won')
   scene:new_entity(Win())
 end

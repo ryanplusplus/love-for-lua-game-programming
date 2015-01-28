@@ -4,7 +4,6 @@ return function()
     (require 'render/Drawable')('map'),
     (require 'render/Animation')({ 'pickup', 'player', 'enemy' }),
     (require 'render/hud'),
-    (require 'render/game_over'),
-    (require 'render/win')
+    (require 'render/fancy_message')
   }
 end

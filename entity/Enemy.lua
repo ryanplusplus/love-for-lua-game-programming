@@ -86,6 +86,7 @@ return function(x, y)
     drops = {
       [GoldCoin()] = 1,
       [SilverCoin()] = 4
-    }
+    },
+    death_sound = 'res/squish.wav'
   }
 end

@@ -25,6 +25,7 @@ return function(x, y)
     animation = animation,
     add_to_world = true,
     extra_life = true,
-    death_animation = pickup
+    death_animation = pickup,
+    death_sound = 'res/plink.wav'
   }
 end

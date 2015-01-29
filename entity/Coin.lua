@@ -32,6 +32,7 @@ return function(sprites, points)
     coin = true,
     points = points,
     death_animation = pickup,
-    one_way_platform_position = true
+    one_way_platform_position = true,
+    death_sound = 'res/coin.wav'
   }
 end

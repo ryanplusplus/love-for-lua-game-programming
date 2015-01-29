@@ -17,6 +17,7 @@ return function(world, key_pressed, key_held, on_game_over, on_win)
     (require 'update/movement_animation'),
     (require 'update/directional_death_animation'),
     (require 'update/death_animation'),
+    (require 'update/death_sound'),
     (require 'update/drops'),
     (require 'update/respawn')(world),
     (require 'update/remove_dead')(world),

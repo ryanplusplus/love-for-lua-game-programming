@@ -23,4 +23,11 @@
    eJztlsEOgyAMhhu36A7bcRdPPoD6ZLr3P66NkrgEFWyL3caX9EAChbQ/PwBkMnYoMC4Y17MP8iVQrcqDa2vGWklieu7mZo38J8v+cyJGOyH3hOY0GI+IvEcYMEaMl/I+W9zB7zsVxk14L8rZKeT1QT3k+OlT6BxSeTRpYepLP4+pdqT9NW1oo6WTNb85m1C/kfBBXw1Svb2kpwZ4enK1SqVJa/fXyj9PCo7HkG/1u7M+cd6S6h2SRPJfYk3Xv0CIr2r+efdyW+cNeLAGnA==
   </data>
  </layer>
+ <objectgroup name="Entities" width="40" height="30">
+  <object name="Player" x="87" y="26">
+   <properties>
+    <property name="name" value="player1"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

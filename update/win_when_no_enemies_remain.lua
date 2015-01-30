@@ -9,6 +9,5 @@ return function(scene, dt)
     return
   end
 
-  print('won')
   scene:new_entity(Win())
 end

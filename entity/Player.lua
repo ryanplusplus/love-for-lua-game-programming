@@ -127,7 +127,7 @@ return function(controls)
       can_pickup_powerups = true,
       dies_when_off_stage = true,
       one_way_platform_position = true,
-      death_sound = 'res/blah.mp3'
+      death_sound = 'res/blah.wav'
     }
   end
 end

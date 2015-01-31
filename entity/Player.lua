@@ -2,9 +2,6 @@ local Animation = require 'utility/Animation'
 
 return function(controls)
   return function(config)
-    local x = config.x
-    local y = config.y
-    local name = config.name
     local controls = controls[name]
 
     local walk_right = Animation({
@@ -73,8 +70,8 @@ return function(controls)
 
     return {
       position = {
-        x = x,
-        y = y
+        x = config.x,
+        y = config.y
       },
       velocity = {
         x = 0,
@@ -116,7 +113,7 @@ return function(controls)
         entity.life = entity.initial_life
       end,
       lives = 3,
-      name = name,
+      name = config.name,
       death_animation = death,
       cannot_leave_map = true,
       score = 0,

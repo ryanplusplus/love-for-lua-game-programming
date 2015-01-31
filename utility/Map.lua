@@ -31,18 +31,19 @@ local function add_platform_tiles_to_world(map, world)
   end
 end
 
-local function extract_entities(map)
+local function extract_entities(map, entity_factories)
   local entities = {}
   for _, entity in pairs(map('Entities').objects) do
-    table.insert(entities, (require 'entity/Player')(entity.x, entity.y, entity.properties.name, { left = 'left', right = 'right', jump = 'up' }))
+    entity.properties.x = entity.x
+    entity.properties.y = entity.y
+    table.insert(entities, entity_factories[entity.properties.type](entity.properties))
   end
   return entities
 end
 
-return function(world, level_file)
+return function(world, level_file, entity_factories)
   local map = load_tile_map(level_file)
   add_platform_tiles_to_world(map, world)
-  local entities = extract_entities(map)
-  print(entities)
+  local entities = extract_entities(map, entity_factories)
   return map, entities
 end

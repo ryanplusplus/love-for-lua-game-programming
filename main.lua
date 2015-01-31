@@ -6,6 +6,10 @@ local scene
 local key_pressed = {}
 local key_held = {}
 
+local controls = {
+  player1 = { left = 'left', right = 'right', jump = 'up' }
+}
+
 function love.keypressed(k)
   key_pressed[k] = true
   key_held[k] = true
@@ -23,7 +27,7 @@ end
 
 local function init()
   scene = MenuScene(key_pressed, function()
-    scene = LevelScene(key_pressed, key_held, 'res/background.png', 'res/map.tmx', init, init)
+    scene = LevelScene(key_pressed, key_held, controls, 'res/background.png', 'res/map.tmx', init, init)
   end)
 end
 

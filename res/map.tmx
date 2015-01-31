@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="2">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="tiles.png" trans="ff00ff" width="320" height="200"/>
  </tileset>
@@ -23,10 +23,11 @@
    eJztlsEOgyAMhhu36A7bcRdPPoD6ZLr3P66NkrgEFWyL3caX9EAChbQ/PwBkMnYoMC4Y17MP8iVQrcqDa2vGWklieu7mZo38J8v+cyJGOyH3hOY0GI+IvEcYMEaMl/I+W9zB7zsVxk14L8rZKeT1QT3k+OlT6BxSeTRpYepLP4+pdqT9NW1oo6WTNb85m1C/kfBBXw1Svb2kpwZ4enK1SqVJa/fXyj9PCo7HkG/1u7M+cd6S6h2SRPJfYk3Xv0CIr2r+efdyW+cNeLAGnA==
   </data>
  </layer>
- <objectgroup name="Entities" width="40" height="30">
-  <object name="Player" x="87" y="26">
+ <objectgroup name="Entities">
+  <object id="1" name="Player 1" x="87" y="26">
    <properties>
     <property name="name" value="player1"/>
+    <property name="type" value="Player"/>
    </properties>
   </object>
  </objectgroup>

@@ -2,7 +2,7 @@ local Animation = require 'utility/Animation'
 
 return function(controls)
   return function(config)
-    local controls = controls[name]
+    local controls = controls[config.name]
 
     local walk_right = Animation({
       sprites = 'res/player_walk_right.png',

@@ -2,7 +2,7 @@ local Animation = require 'utility/Animation'
 local GoldCoin = require 'entity/GoldCoin'
 local SilverCoin = require 'entity/SilverCoin'
 
-return function(x, y)
+return function(config)
   local walk_right = Animation({
     sprites = 'res/enemy_walk_right.png',
     offsets = {
@@ -43,8 +43,8 @@ return function(x, y)
 
   return {
     position = {
-      x = x,
-      y = y
+      x = config.x,
+      y = config.y
     },
     velocity = {
       x = 0,

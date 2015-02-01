@@ -26,7 +26,8 @@ return function(key_pressed, key_held, controls, background, map, on_game_over, 
 
   local map, entities = Map(world, map, {
     Player = Player(controls),
-    Enemy = Enemy
+    Enemy = Enemy,
+    ExtraLife = ExtraLife
   })
 
   scene:new_entity({
@@ -40,15 +41,6 @@ return function(key_pressed, key_held, controls, background, map, on_game_over, 
 
   scene:new_entity(Hud({ player_name = 'player1', x = 635, y = 5, justify = 'right' }))
   scene:new_entity(Hud({ player_name = 'player2', x = 635, y = 25, justify = 'right' }))
-  -- scene:new_entity(Player(20, 10, 'player1', { left = 'left', right = 'right', jump = 'up' }))
-  -- scene:new_entity(Player(50, 10, 'player2', { left = 'z', right = 'x', jump = 's' }))
-  -- scene:new_entity(Enemy(500, 10))
-  -- scene:new_entity(Enemy(100, 200))
-  -- scene:new_entity(Enemy(350, 250))
-  -- scene:new_entity(Enemy(350, 400))
-  scene:new_entity(ExtraLife(248, 76))
-  scene:new_entity(ExtraLife(416, 300))
-  scene:new_entity(ExtraLife(65, 284))
 
   return scene
 end

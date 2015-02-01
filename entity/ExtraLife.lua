@@ -1,6 +1,6 @@
 local Animation = require 'utility/Animation'
 
-return function(x, y)
+return function(config)
   local animation = Animation({
     sprites = 'res/extra_life.png',
     frame_time = 0.25
@@ -14,8 +14,8 @@ return function(x, y)
 
   return {
     position = {
-      x = x,
-      y = y
+      x = config.x,
+      y = config.y
     },
     size = {
       width = 16,

@@ -7,7 +7,8 @@ local key_pressed = {}
 local key_held = {}
 
 local controls = {
-  player1 = { left = 'left', right = 'right', jump = 'up' }
+  player1 = { left = 'left', right = 'right', jump = 'up' },
+  player2 = { left = 'z', right = 'x', jump = 's' }
 }
 
 function love.keypressed(k)

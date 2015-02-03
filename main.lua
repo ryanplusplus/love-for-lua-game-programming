@@ -26,14 +26,23 @@ local function reset_keys()
   end
 end
 
-local function init()
-  scene = MenuScene(key_pressed, function()
-    scene = LevelScene(key_pressed, key_held, controls, 'res/background.png', 'res/level1.tmx', init, init)
-  end)
+local load_level_1
+local load_level_2
+
+local function load_menu()
+  scene = MenuScene(key_pressed, load_level_1)
+end
+
+function load_level_1()
+  scene = LevelScene(key_pressed, key_held, controls, 'res/background.png', 'res/level1.tmx', load_menu, load_level_2)
+end
+
+function load_level_2()
+  scene = LevelScene(key_pressed, key_held, controls, 'res/background.png', 'res/level1.tmx', load_menu, load_menu)
 end
 
 function love.load()
-  init()
+  load_menu()
 end
 
 function love.draw()

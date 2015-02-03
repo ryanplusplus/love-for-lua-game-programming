@@ -106,8 +106,8 @@ return function(controls)
       add_to_world = true,
       player = true,
       respawn = function(entity)
-        entity.position.x = x
-        entity.position.y = y
+        entity.position.x = config.x
+        entity.position.y = config.y
         entity.direction = 1
         entity.velocity.y = 0
         entity.life = entity.initial_life

@@ -38,7 +38,7 @@ function load_level_1()
 end
 
 function load_level_2()
-  scene = LevelScene(key_pressed, key_held, controls, 'res/background.png', 'res/level1.tmx', load_menu, load_menu)
+  scene = LevelScene(key_pressed, key_held, controls, 'res/background.png', 'res/level2.tmx', load_menu, load_menu)
 end
 
 function love.load()

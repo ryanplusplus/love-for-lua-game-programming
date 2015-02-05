@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="40" height="30" tilewidth="16" tileheight="16" nextobjectid="11">
+<map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
   <image source="tiles.png" trans="ff00ff" width="320" height="200"/>
  </tileset>
@@ -15,22 +15,37 @@
  </layer>
  <layer name="not_platform" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0LsJgEAURNHFItTUImzCTwl+tv8mnGAFg1UjmQXvgctLhxcCAADI6dwDHgyqT7dEq1rSLdGoJjW7h9zY1K6ieUdO5R7wolbNpdY75xfOn/NrAMCXDtIXBMI=
+   eJxjYBgFo2AUjIJRMApGATagONAOwAO8gNgUStMLiAGxBJFq44A4FkoPRuANxD5A7ItFjhR/0grEA3ECECcOoBtwhQMTvR1CIgC5WxwJD3RcDhSAhQM9/E9Pu0bB8AGDoawdBaNgFAx+gFzHAACaFwYE
   </data>
  </layer>
  <layer name="platform" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJzt0LENACAQA7EXsDGwPxmBjgJbuj5KFQAA3JtppZ3G4y0/aKmXrwH42wH9IQFq
+   eJzt1dsNwCAIQFHiY2J1f+kEmrQgqfck/ApIRBEAANbq6QIukDSKc84v57p71ok+I7K8B+v32jS6xpB7Z/nML4tP/x65Iuz4CDX8CbsWwA7P/+ytCTA+AbI=
   </data>
  </layer>
- <objectgroup name="Entities">
-  <object id="9" name="Player 1" x="282" y="163">
+ <objectgroup name="Entities" width="0" height="0">
+  <object name="Player 1" x="282" y="163">
    <properties>
     <property name="name" value="player1"/>
     <property name="type" value="Player"/>
    </properties>
   </object>
-  <object id="10" name="Enemy" x="474" y="242">
+  <object name="Enemy" x="474" y="242">
+   <properties>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object name="Enemy" x="160" y="211">
+   <properties>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object name="Enemy" x="41" y="260">
+   <properties>
+    <property name="type" value="Enemy"/>
+   </properties>
+  </object>
+  <object name="Enemy" x="621" y="228">
    <properties>
     <property name="type" value="Enemy"/>
    </properties>

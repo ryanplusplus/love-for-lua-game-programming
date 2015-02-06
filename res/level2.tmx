@@ -8,19 +8,24 @@
    eJztwTEBAAAAwqD1T20ND6AAAAAA4NcAEsAAAQ==
   </data>
  </layer>
- <layer name="decoration" width="40" height="30">
+ <layer name="background_trees" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20ND6AAAAAA4NcAEsAAAQ==
+   eJztzrENwDAQAzHP5WT/uewmE/DTnQC1xK01s33/3L9D3mdOWvWZVZ9Z9ZlVn1n1mVWfWfWZVZ9Z9ZlVn1n1mVWfWfWZVZ9Zf/QdnPgbiw==
   </data>
  </layer>
  <layer name="not_platform" width="40" height="30">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMApGATagONAOwAO8gNgUStMLiAGxBJFq44A4FkoPRuANxD5A7ItFjhR/0grEA3ECECcOoBtwhQMTvR1CIgC5WxwJD3RcDhSAhQM9/E9Pu0bB8AGDoawdBaNgFAx+gFzHAACaFwYE
+   eJxjYBgFo2AUjIJRMApGATagONAOwAO8gNgUStMLiAGxBJFq44A4FkoPRuANxD5A7ItFjhR/0grEA3ECECcOoBuwhYM9EDNhUetEe+cQDUDuFkfCAx2XAwVg4UAP/9PTrlEwfMBgKGtHwSgYBYMfINcxAOCrBoU=
   </data>
  </layer>
  <layer name="platform" width="40" height="30">
   <data encoding="base64" compression="zlib">
    eJzt1dsNwCAIQFHiY2J1f+kEmrQgqfck/ApIRBEAANbq6QIukDSKc84v57p71ok+I7K8B+v32jS6xpB7Z/nML4tP/x65Iuz4CDX8CbsWwA7P/+ytCTA+AbI=
+  </data>
+ </layer>
+ <layer name="foreground_trees" width="40" height="30">
+  <data encoding="base64" compression="zlib">
+   eJzt0MEJACAMBEH70AbU/vvTt6D4yOKBF8gvDEtS2k+d2+b2w83tRFqE6T4dizDdF2OVAGs1f/qf+95bhOk+HYsw3adjEab7dCzCdJ+ORZju07EIk+jLgeaP/1PoGzBDHWw=
   </data>
  </layer>
  <objectgroup name="Entities" width="0" height="0">

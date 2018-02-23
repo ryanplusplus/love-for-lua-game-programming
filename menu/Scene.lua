@@ -4,7 +4,7 @@ local Background = require 'entity/Background'
 return function(key_pressed, on_start)
   local scene = Scene()
 
-  scene:add_render_system((require 'render/Drawable')('background'))
+  scene:add_render_system(require 'render/Drawable'('background'))
   scene:add_render_system(require 'render/text')
 
   scene:add_update_system(function(scene, dt)

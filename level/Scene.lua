@@ -1,4 +1,4 @@
-local World = (require 'lib/bump/bump').newWorld
+local World = require 'lib/bump/bump'.newWorld
 local Scene = require '/lib/scene/Scene'
 local Map = require 'utility/Map'
 local Background = require 'entity/Background'
@@ -22,7 +22,7 @@ return function(key_pressed, key_held, controls, background, map, on_game_over, 
   scene:add_update_system(reset_keys)
 
   local map, entities = Map(world, map, {
-    Player = (require 'entity/Player')(controls),
+    Player = require 'entity/Player'(controls),
     Enemy = require 'entity/Enemy',
     ExtraLife = require 'entity/ExtraLife'
   })
